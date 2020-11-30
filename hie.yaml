@@ -1,0 +1,16 @@
+cradle:
+  multi:
+    # - path: "ignore/"
+    #   config: {cradle: {none: }}
+
+    - path: "src"
+      config: {cradle: {cabal: {component: "lib:aoc2020"}}}
+
+    - path: "app"
+      config: {cradle: {cabal: {component: "aoc2020:aoc2020-exe"}}}
+
+    - path: "test"
+      config: {cradle: {cabal: {component: "aoc2020:aoc2020-test"}}}
+
+    - path: "bench"
+      config: {cradle: {cabal: {component: "aoc2020:aoc2020-bench"}}}
