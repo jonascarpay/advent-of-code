@@ -1,23 +1,58 @@
+{-# LANGUAGE ImportQualifiedPost #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TupleSections #-}
 
 module Lib where
 
-import Control.Applicative
+import Control.Applicative hiding (many)
 import Control.Monad.Reader
 import Control.Monad.State
+import Data.ByteString (ByteString)
+import Data.ByteString qualified as BS
+import Data.Void
+import Data.Word
+import Text.Megaparsec
+import Text.Megaparsec.Byte
+import Text.Megaparsec.Byte.Lexer qualified as Lex
 
-{-- fluff
-uniquePairs :: [a] -> [(a, a)]
-uniquePairs [] = []
-uniquePairs (a : t) = (fmap (a,) t) <> uniquePairs t
+type Parser = Parsec Void BS.ByteString
 
-uniqueTriplets :: [a] -> [(a, a, a)]
-uniqueTriplets [] = []
-uniqueTriplets (a : t) = (tcons a <$> uniquePairs t) <> uniqueTriplets t
+parseFile :: FilePath -> Parser a -> IO a
+parseFile fp p = do
+  bs <- BS.readFile fp
+  either (fail . errorBundlePretty) pure $ runParser p fp bs
+
+pLines :: Parser a -> Parser [a]
+pLines p = many (p <* eol) <* eof
+
+-- Day 2
+
+parsePw :: Parser (Int, Int, Word8, ByteString)
+parsePw = do
+  lo <- Lex.decimal
+  chunk "-"
+  hi <- Lex.decimal
+  chunk " "
+  c <- anySingle
+  chunk ": "
+  pw <- BS.pack <$> many alphaNumChar
+  pure (lo, hi, c, pw)
+
+validPass :: (Int, Int, Word8, ByteString) -> Bool
+validPass (lo, hi, c, str) = let n = BS.length (BS.filter (== c) str) in n >= lo && n <= hi
+
+validPass2 :: (Int, Int, Word8, ByteString) -> Bool
+validPass2 (lo, hi, c, str) = do
+  let clo = BS.index str (lo -1)
+      chi = BS.index str (hi -1)
+   in xor (clo == c) (chi == c)
  where
-  tcons a (b, c) = (a, b, c)
---}
+  xor True False = True
+  xor False True = True
+  xor _ _ = False
+
+-- Day 1
 
 uniques :: Traversable t => t () -> [a] -> [t a]
 uniques base as =

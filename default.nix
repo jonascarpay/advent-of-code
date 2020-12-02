@@ -11,5 +11,5 @@ let
 in
 pkgs.haskell-nix.project {
   src = pkgs.haskell-nix.haskellLib.cleanGit { src = ./.; };
-  compiler-nix-name = "ghc883";
+  compiler-nix-name = "ghc8102";
 }

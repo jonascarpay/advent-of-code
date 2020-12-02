@@ -1,5 +1,12 @@
 packages:
   ./
 
-package NAME
-  tests: True
+source-repository
+  type: git
+  location: https://github.com/jonascarpay/megaparsec.git
+  tag: 33609bb67d5fb6ba3f171a249f13d623da8aa8ab
+
+source-repository
+  type: git
+  location: https://github.com/jonascarpay/text.git
+  tag: be54b46175db603aafea3e3f19a6a75e87a29828

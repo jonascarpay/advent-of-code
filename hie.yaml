@@ -1,10 +1,4 @@
 cradle:
   multi:
-    # - path: "ignore/"
-    #   config: {cradle: {none: }}
-
     - path: "src"
-      config: {cradle: {cabal: {component: "lib:aoc2020"}}}
-
-    - path: "app"
-      config: {cradle: {cabal: {component: "aoc2020:day1"}}}
+      config: {cradle: {cabal: {component: "lib"}}}
