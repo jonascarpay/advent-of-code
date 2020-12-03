@@ -4,45 +4,27 @@
 
 module Lib where
 
+import Block
 import Control.Applicative hiding (many)
 import Control.Monad.Reader
 import Control.Monad.State
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
-import Data.Char
-import Data.Void
 import Data.Word
-import Debug.Trace
+import Parse
 import Text.Megaparsec
 import Text.Megaparsec.Byte
 import Text.Megaparsec.Byte.Lexer qualified as Lex
 
-type Parser = Parsec Void BS.ByteString
-
-parseFile :: FilePath -> Parser a -> IO a
-parseFile fp p = do
-  bs <- BS.readFile fp
-  either (fail . errorBundlePretty) pure $ runParser p fp bs
-
-pLines :: Parser a -> Parser [a]
-pLines p = many (p <* eol) <* eof
-
 -- Day 3
 
-tobbogan :: Int -> Int -> ByteString -> Int
-tobbogan dx dy bs = length $ filter (\i -> BS.index bs i == ascii '#') $ is 0 0
+tobbogan :: Int -> Int -> Block Word8 -> Int
+tobbogan dx dy b = length $ filter (== ascii '#') $ go 0 0
  where
-  w :: Int
-  Just w = BS.findIndex (== ascii '\n') bs
-  is :: Int -> Int -> [Int]
-  is x y =
-    let i = x + y * (w + 1)
-     in if i > BS.length bs
-          then []
-          else i : is (mod (x + dx) w) (y + dy)
-
-ascii :: Char -> Word8
-ascii = fromIntegral . ord
+  go :: Int -> Int -> [Word8]
+  go x y
+    | y < bHeight b = bIndexWrap x y b : go (x + dx) (y + dy)
+    | otherwise = []
 
 -- Day 2
 

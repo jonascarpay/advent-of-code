@@ -3,10 +3,10 @@
 
 module Runners where
 
-import Data.ByteString qualified as BS
+import Block
 import Lib
 import Linear
-import Text.Megaparsec
+import Parse
 import Text.Megaparsec.Byte.Lexer qualified as Lex
 
 day1 :: IO ()
@@ -31,13 +31,11 @@ day2 = do
 
 day3 :: IO ()
 day3 = do
-  input <- BS.readFile "input/day3.txt"
-  print $ tobbogan 3 1 input
-  print $
-    product
-      [ tobbogan 1 1 input
-      , tobbogan 3 1 input
-      , tobbogan 5 1 input
-      , tobbogan 7 1 input
-      , tobbogan 1 2 input
-      ]
+  block <- parseFile "input/day3.txt" pBlock
+  print $ tobbogan 3 1 block
+  print
+    [ tobbogan 3 1 block
+    , tobbogan 5 1 block
+    , tobbogan 7 1 block
+    , tobbogan 3 2 block
+    ]

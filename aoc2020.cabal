@@ -10,7 +10,9 @@ copyright:     2020 Jonas Carpay
 library
   hs-source-dirs:     src
   exposed-modules:
+    Block
     Lib
+    Parse
     Runners
 
   build-depends:
@@ -20,6 +22,7 @@ library
     , linear
     , megaparsec
     , mtl
+    , vector
 
   default-language:   Haskell2010
   ghc-options:
