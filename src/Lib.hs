@@ -30,14 +30,19 @@ pLines p = many (p <* eol) <* eof
 -- Day 3
 
 tobbogan :: Int -> Int -> ByteString -> Int
-tobbogan dx dy bs =
-  let w :: Int
-      Just w = BS.findIndex (== fromIntegral (ord '\n')) bs
-      is :: Int -> Int -> [Int]
-      is x y =
-        let i = x + y * (w + 1)
-         in if i > BS.length bs then [] else i : is (mod (x + dx) w) (y + dy)
-   in length $ filter (\i -> BS.index bs i == fromIntegral (ord '#')) $ is 0 0
+tobbogan dx dy bs = length $ filter (\i -> BS.index bs i == ascii '#') $ is 0 0
+ where
+  w :: Int
+  Just w = BS.findIndex (== ascii '\n') bs
+  is :: Int -> Int -> [Int]
+  is x y =
+    let i = x + y * (w + 1)
+     in if i > BS.length bs
+          then []
+          else i : is (mod (x + dx) w) (y + dy)
+
+ascii :: Char -> Word8
+ascii = fromIntegral . ord
 
 -- Day 2
 
