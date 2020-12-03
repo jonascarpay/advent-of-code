@@ -1,16 +1,11 @@
-cabal-version:   2.4
-name:            aoc2020
-version:         0
-license:         BSD-3-Clause
-build-type:      Simple
-extra-doc-files:
-  README.md
-  CHANGELOG.md
-
-license-file:    LICENSE
-author:          Jonas Carpay
-maintainer:      Jonas Carpay <jonascarpay@gmail.com>
-copyright:       2020 Jonas Carpay
+cabal-version: 2.4
+name:          aoc2020
+version:       0
+license:       BSD-3-Clause
+build-type:    Simple
+author:        Jonas Carpay
+maintainer:    Jonas Carpay <jonascarpay@gmail.com>
+copyright:     2020 Jonas Carpay
 
 library
   hs-source-dirs:     src
