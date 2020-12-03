@@ -10,8 +10,10 @@ import Control.Monad.Reader
 import Control.Monad.State
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
+import Data.Char
 import Data.Void
 import Data.Word
+import Debug.Trace
 import Text.Megaparsec
 import Text.Megaparsec.Byte
 import Text.Megaparsec.Byte.Lexer qualified as Lex
@@ -25,6 +27,18 @@ parseFile fp p = do
 
 pLines :: Parser a -> Parser [a]
 pLines p = many (p <* eol) <* eof
+
+-- Day 3
+
+tobbogan :: Int -> Int -> ByteString -> Int
+tobbogan dx dy bs =
+  let w :: Int
+      Just w = BS.findIndex (== fromIntegral (ord '\n')) bs
+      is :: Int -> Int -> [Int]
+      is x y =
+        let i = x + y * (w + 1)
+         in if i > BS.length bs then [] else i : is (mod (x + dx) w) (y + dy)
+   in length $ filter (\i -> BS.index bs i == fromIntegral (ord '#')) $ is 0 0
 
 -- Day 2
 
