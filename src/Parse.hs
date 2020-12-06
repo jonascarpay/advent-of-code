@@ -20,3 +20,18 @@ ascii = fromIntegral . ord
 
 pLines :: Parser a -> Parser [a]
 pLines p = many (p <* eol) <* eof
+
+{-# INLINE pSuchThat #-}
+pSuchThat :: MonadParsec e s m => m a -> (a -> Either (m Void) b) -> m b
+pSuchThat m f = do
+  (n, a) <- lookAhead $ do
+    p <- getOffset
+    a <- m
+    q <- getOffset
+    pure (q - p, a)
+  case f a of
+    Left err -> absurd <$> err
+    Right b -> b <$ takeP Nothing n
+
+pLine :: Parser ByteString
+pLine = takeWhileP Nothing (/= ascii '\n') <* single (ascii '\n')
