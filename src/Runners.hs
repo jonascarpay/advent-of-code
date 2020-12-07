@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 
@@ -6,6 +7,10 @@ module Runners where
 import Block
 import Control.Monad
 import Data.List.Split
+import Data.Map (Map)
+import Data.Map qualified as M
+import Data.Maybe
+import Data.Set (Set)
 import Data.Set qualified as S
 import Lib
 import Linear
@@ -62,3 +67,22 @@ day6 = do
   gs <- filter (not . null) . splitOn [""] . lines <$> readFile "input/day6.txt"
   print $ length $ [() | g <- gs, c <- ['a' .. 'z'], all (elem c) g]
   print $ length $ [() | g <- gs, c <- ['a' .. 'z'], any (elem c) g]
+
+day7 :: IO ()
+day7 = do
+  contains <- parseFile "input/day7.txt" parseBags
+  let sg = Bag "shiny" "gold"
+  print $
+    let m :: Map Bag (Set Bag) -- containedby
+        m = M.fromListWith (<>) [(c', S.singleton c) | (c, cs) <- contains, (_, c') <- cs]
+        go :: Set Bag -> Set Bag
+        go set =
+          let set' = set <> mconcat (fromMaybe mempty . flip M.lookup m <$> S.toList set)
+           in if set == set' then set else go set'
+     in length $ go (S.singleton sg)
+  print $
+    let m :: Map Bag [(Int, Bag)] -- contains
+        m = M.fromList contains
+        go :: Bag -> Int
+        go b = maybe 0 (sum . fmap (\(n, b') -> n + n * go b')) $ M.lookup b m
+     in go sg

@@ -1,5 +1,9 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Parse where
 
+import Control.Applicative hiding (many)
+import Control.Monad
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
 import Data.Char
@@ -7,8 +11,32 @@ import Data.Void
 import Data.Word
 import Text.Megaparsec
 import Text.Megaparsec.Byte
+import Text.Megaparsec.Byte.Lexer qualified as Lex
 
 type Parser = Parsec Void ByteString
+
+word :: Parser ByteString
+word = takeWhileP Nothing (\c -> c >= ascii 'a' && c <= ascii 'z')
+
+data Bag = Bag ByteString ByteString
+  deriving (Eq, Ord, Show)
+
+parseBags :: Parser [(Bag, [(Int, Bag)])]
+parseBags = many (pContains <* eol) <* takeRest
+ where
+  pBag :: Parser Bag
+  pBag = do
+    w1 <- word <* chunk " "
+    w2 <- word <* chunk " "
+    chunk "bags" <|> chunk "bag"
+    pure (Bag w1 w2)
+  pContains :: Parser (Bag, [(Int, Bag)])
+  pContains = do
+    bHead <- pBag <* chunk " contain "
+    let nDec = Lex.decimal <* chunk " "
+    bs <- ([] <$ chunk "no other bags") <|> (sepBy (liftA2 (,) nDec pBag) (chunk ", "))
+    chunk "."
+    pure $ (bHead, bs)
 
 parseFile :: FilePath -> Parser a -> IO a
 parseFile fp p = do
