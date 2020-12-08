@@ -12,6 +12,7 @@ import Data.Map qualified as M
 import Data.Maybe
 import Data.Set (Set)
 import Data.Set qualified as S
+import Data.Vector qualified as V
 import Lib
 import Linear
 import Parse
@@ -86,3 +87,46 @@ day7 = do
         go :: Bag -> Int
         go b = maybe 0 (sum . fmap (\(n, b') -> n + n * go b')) $ M.lookup b m
      in go sg
+
+data Op
+  = Acc Int
+  | Jmp Int
+  | Nop Int
+  deriving (Show)
+
+parseop :: [String] -> Op
+parseop [op, '+' : n] = parseop [op, n]
+parseop ["acc", n] = Acc (read n)
+parseop ["jmp", n] = Jmp (read n)
+parseop ["nop", n] = Nop (read n)
+
+is :: Op -> Bool
+is (Acc _) = False
+is _ = True
+
+toggle (Jmp n) = Nop n
+toggle (Nop n) = Jmp n
+
+day8 :: IO ()
+day8 = do
+  prg <- V.fromList . fmap (parseop . words) . filter (/= []) . lines <$> readFile "input/day8.txt"
+  let go acc pc pcs
+        | S.member pc pcs = acc
+        | otherwise = case prg V.! pc of
+          Jmp n -> let pc' = pc + n in go acc pc' (S.insert pc pcs)
+          Acc n -> let pc' = pc + 1 in go (acc + n) pc' (S.insert pc pcs)
+          Nop _ -> let pc' = pc + 1 in go acc pc' (S.insert pc pcs)
+  let go2 v acc pc pcs
+        | S.member pc pcs = Nothing
+        | pc >= V.length v = Just acc
+        | otherwise = case v V.! pc of
+          Jmp n -> let pc' = pc + n in go2 v acc pc' (S.insert pc pcs)
+          Acc n -> let pc' = pc + 1 in go2 v (acc + n) pc' (S.insert pc pcs)
+          Nop _ -> let pc' = pc + 1 in go2 v acc pc' (S.insert pc pcs)
+
+  print $ go 0 0 mempty
+  print $
+    V.filter isJust $
+      fmap
+        (\n -> go2 (prg V.// [(n, toggle (prg V.! n))]) 0 0 mempty)
+        (V.findIndices is prg)
