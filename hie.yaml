@@ -2,3 +2,5 @@ cradle:
   multi:
     - path: "src"
       config: {cradle: {cabal: {component: "lib"}}}
+    - path: "test"
+      config: {cradle: {cabal: {component: "aoc2020:spec"}}}

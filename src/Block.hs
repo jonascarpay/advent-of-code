@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveTraversable #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module Block where
 
@@ -64,6 +65,14 @@ findBlock needle haystack =
   offsets = V.toList $ V.findIndices (== p) (bData haystack)
   positions = fmap (\o -> (mod o w, div o w)) offsets
 
+imap :: ((Int, Int) -> a -> b) -> Block a -> Block b
+imap f (Block w h arr) = Block w h (flip V.imap arr $ \ix -> f (swap $ divMod ix w))
+ where
+  swap (a, b) = (b, a)
+
+bList :: Block a -> [a]
+bList (Block _ _ v) = V.toList v
+
 bIndexWrap :: Int -> Int -> Block a -> a
 bIndexWrap x y (Block w h vec) = vec V.! (mod x w + mod y h * w)
 
@@ -74,6 +83,13 @@ bIndex x y b@(Block w _ vec)
 
 inBounds :: Int -> Int -> Block a -> Bool
 inBounds x y (Block w h _) = x >= 0 && y >= 0 && x < w && y < h
+
+showBlock :: forall a. (a -> Char) -> Block a -> String
+showBlock f (Block w _ v) = unlines $ go (V.toList v)
+ where
+  go :: [a] -> [String]
+  go [] = []
+  go ls = let (h, t) = splitAt w ls in (f <$> h) : go t
 
 pBlock :: Parser (Block Word8)
 pBlock = mkArray <$> pBlockLines

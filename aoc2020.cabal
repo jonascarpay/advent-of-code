@@ -7,14 +7,7 @@ author:        Jonas Carpay
 maintainer:    Jonas Carpay <jonascarpay@gmail.com>
 copyright:     2020 Jonas Carpay
 
-library
-  hs-source-dirs:     src
-  exposed-modules:
-    Block
-    Lib
-    Parse
-    Runners
-
+common deps
   build-depends:
     , base        >=4.13.0.0 && <5
     , bytestring
@@ -32,3 +25,37 @@ library
     -fhide-source-paths -Wpartial-fields -fno-warn-unused-do-bind
 
   default-extensions: ImportQualifiedPost
+
+library
+  import:          deps
+  hs-source-dirs:  src
+  exposed-modules:
+    Block
+    Lib
+    Parse
+    Runners
+
+test-suite spec
+  import:         deps
+  hs-source-dirs: test
+  type:           exitcode-stdio-1.0
+  main-is:        Spec.hs
+  other-modules:
+    AOC2020
+    AOC2020.Common
+    AOC2020.Day01
+    AOC2020.Day02
+    AOC2020.Day03
+    AOC2020.Day04
+    AOC2020.Day05
+    AOC2020.Day06
+    AOC2020.Day07
+    AOC2020.Day08
+    AOC2020.Day09
+    AOC2020.Day10
+    AOC2020.Day11
+    AOC2020.Day12
+
+  build-depends:
+    , aoc2020
+    , hspec
