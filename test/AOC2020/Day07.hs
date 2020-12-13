@@ -14,7 +14,6 @@ import Parse
 import Test.Hspec
 import Text.Megaparsec
 import Text.Megaparsec.Byte
-import Text.Megaparsec.Byte.Lexer qualified as Lex
 
 day7 :: Spec
 day7 = do
@@ -50,7 +49,7 @@ parseBags = many (pContains <* eol) <* takeRest
   pContains :: Parser (Bag, [(Int, Bag)])
   pContains = do
     bHead <- pBag <* chunk " contain "
-    let nDec = Lex.decimal <* chunk " "
+    let nDec = decimal <* chunk " "
     bs <- ([] <$ chunk "no other bags") <|> (sepBy (liftA2 (,) nDec pBag) (chunk ", "))
     chunk "."
     pure $ (bHead, bs)

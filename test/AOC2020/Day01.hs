@@ -9,11 +9,10 @@ import Lib
 import Linear
 import Parse
 import Test.Hspec
-import Text.Megaparsec.Byte.Lexer qualified as Lex
 
 day1 :: Spec
 day1 = do
-  input :: [Int] <- runIO $ parseFile "input/day1.txt" $ pLines Lex.decimal
+  input :: [Int] <- runIO $ parseFile "input/day1.txt" $ pLines decimal
   star1 876459
     . product
     . fmap product

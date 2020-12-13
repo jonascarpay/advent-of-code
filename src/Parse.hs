@@ -2,8 +2,6 @@
 
 module Parse where
 
-import Control.Applicative hiding (many)
-import Control.Monad
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
 import Data.Char
@@ -14,6 +12,9 @@ import Text.Megaparsec.Byte
 import Text.Megaparsec.Byte.Lexer qualified as Lex
 
 type Parser = Parsec Void ByteString
+
+decimal :: Parser Int
+decimal = Lex.decimal
 
 word :: Parser ByteString
 word = takeWhileP Nothing (\c -> c >= ascii 'a' && c <= ascii 'z')

@@ -10,7 +10,6 @@ import Parse
 import Test.Hspec
 import Text.Megaparsec
 import Text.Megaparsec.Byte
-import Text.Megaparsec.Byte.Lexer qualified as Lex
 
 day2 :: Spec
 day2 = do
@@ -20,9 +19,9 @@ day2 = do
 
 parsePw :: Parser (Int, Int, Word8, ByteString)
 parsePw = do
-  lo <- Lex.decimal
+  lo <- decimal
   chunk "-"
-  hi <- Lex.decimal
+  hi <- decimal
   chunk " "
   c <- anySingle
   chunk ": "

@@ -11,7 +11,6 @@ import Parse
 import Test.Hspec
 import Text.Megaparsec
 import Text.Megaparsec.Byte
-import Text.Megaparsec.Byte.Lexer qualified as Lex
 
 validpp :: [(ByteString, ByteString)] -> Bool
 validpp ss = case lookup "cid" ss of
@@ -19,16 +18,16 @@ validpp ss = case lookup "cid" ss of
   Just _ -> length ss == 8
 
 validField :: ByteString -> ByteString -> Bool
-validField "byr" bs = case runParser (Lex.decimal <* eof :: Parser Int) "byr" bs of
+validField "byr" bs = case runParser (decimal <* eof :: Parser Int) "byr" bs of
   Right n -> n >= 1920 && n <= 2002
   Left err -> traceShow err $ False
-validField "iyr" bs = case runParser (Lex.decimal <* eof :: Parser Int) "iyr" bs of
+validField "iyr" bs = case runParser (decimal <* eof :: Parser Int) "iyr" bs of
   Right n -> n >= 2010 && n <= 2020
   _ -> False
-validField "eyr" bs = case runParser (Lex.decimal <* eof :: Parser Int) "eyr" bs of
+validField "eyr" bs = case runParser (decimal <* eof :: Parser Int) "eyr" bs of
   Right n -> n >= 2020 && n <= 2030
   _ -> False
-validField "hgt" bs = case runParser ((,) <$> Lex.decimal <*> (chunk "cm" <|> chunk "in") <* eof :: Parser (Int, ByteString)) "eyr" bs of
+validField "hgt" bs = case runParser ((,) <$> decimal <*> (chunk "cm" <|> chunk "in") <* eof :: Parser (Int, ByteString)) "eyr" bs of
   Right (n, "in") -> n >= 59 && n <= 76
   Right (n, "cm") -> n >= 150 && n <= 193
   _ -> False
