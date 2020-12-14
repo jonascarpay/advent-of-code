@@ -7,10 +7,17 @@ module Lib where
 import Control.Applicative hiding (many)
 import Control.Monad.Reader
 import Control.Monad.State
+import Data.Bool
 import Data.Maybe
 
 findFix :: Eq a => (a -> a) -> a -> a
 findFix f = go where go a = let a' = f a in if a == a' then a else go a'
+
+fromBE :: [Bool] -> Int
+fromBE = go 0
+ where
+  go n [] = n
+  go n (b : t) = go (2 * n + bool 0 1 b) t
 
 -- https://en.wikipedia.org/wiki/Chinese_remainder_theorem
 -- https://rosettacode.org/wiki/Chinese_remainder_theorem

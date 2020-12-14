@@ -9,7 +9,6 @@ import Data.Vector (Vector)
 import Data.Vector qualified as V
 import Data.Word
 import Parse
-import Text.Megaparsec
 
 -- 00 01 02 03
 -- 10 11 12 13

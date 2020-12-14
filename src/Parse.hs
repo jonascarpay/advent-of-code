@@ -1,6 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Parse where
+module Parse (
+  module Parse,
+  module Text.Megaparsec,
+  module Text.Megaparsec.Byte,
+) where
 
 import Data.ByteString (ByteString)
 import Data.ByteString qualified as BS
