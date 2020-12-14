@@ -9,7 +9,6 @@ module AOC2020.Day14 where
 import AOC2020.Common
 import Control.Monad
 import Data.Bits
-import Data.Char
 import Data.IntMap (IntMap)
 import Data.IntMap qualified as IM
 import Lib
@@ -24,7 +23,7 @@ pp = many $ (maskbs <|> membs) <* eol
  where
   maskbs = do
     chars <- chunk "mask = " *> replicateM 36 anySingle
-    pure . Mask $ fmap (chr . fromIntegral) chars
+    pure $ Mask chars
   membs = do
     chunk "mem["
     k <- decimal

@@ -6,7 +6,6 @@ module AOC2020.Day11 (day11) where
 
 import AOC2020.Common
 import Block
-import Data.Char
 import Data.Foldable (toList)
 import Lib
 import Parse
@@ -14,11 +13,6 @@ import Test.Hspec
 
 data Square = Free | Occ | Floor
   deriving (Eq, Show)
-
-pseat :: Square -> Char
-pseat Free = 'L'
-pseat Occ = '#'
-pseat Floor = '.'
 
 step1 :: Block Square -> Block Square
 step1 sq = imap f sq
@@ -58,6 +52,6 @@ day11 = do
   let f 'L' = Free
       f '.' = Floor
       f '#' = Occ
-  seats <- runIO $ fmap (f . chr . fromIntegral) <$> parseFile "input/day11.txt" pBlock
+  seats <- runIO $ fmap f <$> parseFile "input/day11.txt" pBlock
   star1 2368 $ length $ filter (== Occ) $ bList $ findFix step1 seats
   star2 2124 $ length $ filter (== Occ) $ bList $ findFix step2 seats

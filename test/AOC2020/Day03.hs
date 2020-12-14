@@ -4,7 +4,6 @@ module AOC2020.Day03 (day3) where
 
 import AOC2020.Common
 import Block
-import Data.Word
 import Parse
 import Test.Hspec
 
@@ -21,10 +20,10 @@ day3 = do
       , tobbogan 1 2 block
       ]
 
-tobbogan :: Int -> Int -> Block Word8 -> Int
-tobbogan dx dy b = length $ filter (== ascii '#') $ go 0 0
+tobbogan :: Int -> Int -> Block Char -> Int
+tobbogan dx dy b = length $ filter (== '#') $ go 0 0
  where
-  go :: Int -> Int -> [Word8]
+  go :: Int -> Int -> [Char]
   go x y
     | y < bHeight b = bIndexWrap x y b : go (x + dx) (y + dy)
     | otherwise = []

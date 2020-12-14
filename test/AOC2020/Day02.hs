@@ -3,13 +3,9 @@
 module AOC2020.Day02 (day2) where
 
 import AOC2020.Common
-import Data.ByteString (ByteString)
-import Data.ByteString qualified as BS
-import Data.Word
+import Data.Text qualified as T
 import Parse
 import Test.Hspec
-import Text.Megaparsec
-import Text.Megaparsec.Byte
 
 day2 :: Spec
 day2 = do
@@ -17,7 +13,7 @@ day2 = do
   star1 560 $ length $ filter validPass input
   star2 303 $ length $ filter validPass2 input
 
-parsePw :: Parser (Int, Int, Word8, ByteString)
+parsePw :: Parser (Int, Int, Char, Text)
 parsePw = do
   lo <- decimal
   chunk "-"
@@ -25,16 +21,16 @@ parsePw = do
   chunk " "
   c <- anySingle
   chunk ": "
-  pw <- BS.pack <$> many alphaNumChar
+  pw <- T.pack <$> many alphaNumChar
   pure (lo, hi, c, pw)
 
-validPass :: (Int, Int, Word8, ByteString) -> Bool
-validPass (lo, hi, c, str) = let n = BS.length (BS.filter (== c) str) in n >= lo && n <= hi
+validPass :: (Int, Int, Char, Text) -> Bool
+validPass (lo, hi, c, str) = let n = T.length (T.filter (== c) str) in n >= lo && n <= hi
 
-validPass2 :: (Int, Int, Word8, ByteString) -> Bool
+validPass2 :: (Int, Int, Char, Text) -> Bool
 validPass2 (lo, hi, c, str) = do
-  let clo = BS.index str (lo -1)
-      chi = BS.index str (hi -1)
+  let clo = T.index str (lo -1)
+      chi = T.index str (hi -1)
    in xor (clo == c) (chi == c)
  where
   xor True False = True

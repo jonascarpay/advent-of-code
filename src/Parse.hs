@@ -3,33 +3,30 @@
 module Parse (
   module Parse,
   module Text.Megaparsec,
-  module Text.Megaparsec.Byte,
+  module Text.Megaparsec.Char,
+  Text,
 ) where
 
-import Data.ByteString (ByteString)
-import Data.ByteString qualified as BS
-import Data.Char
+import Data.Text (Text)
+import Data.Text qualified as T
+import Data.Text.IO qualified as T
 import Data.Void
-import Data.Word
 import Text.Megaparsec
-import Text.Megaparsec.Byte
-import Text.Megaparsec.Byte.Lexer qualified as Lex
+import Text.Megaparsec.Char
+import Text.Megaparsec.Char.Lexer qualified as Lex
 
-type Parser = Parsec Void ByteString
+type Parser = Parsec Void Text
 
 decimal :: Parser Int
 decimal = Lex.decimal
 
-word :: Parser ByteString
-word = takeWhileP Nothing (\c -> c >= ascii 'a' && c <= ascii 'z')
+word :: Parser Text
+word = takeWhileP Nothing (\c -> c >= 'a' && c <= 'z')
 
 parseFile :: FilePath -> Parser a -> IO a
 parseFile fp p = do
-  bs <- BS.readFile fp
+  bs <- T.readFile fp
   either (fail . errorBundlePretty) pure $ runParser p fp bs
-
-ascii :: Char -> Word8
-ascii = fromIntegral . ord
 
 pLines :: Parser a -> Parser [a]
 pLines p = many (p <* eol) <* eof
@@ -46,5 +43,5 @@ pSuchThat m f = do
     Left err -> absurd <$> err
     Right b -> b <$ takeP Nothing n
 
-pLine :: Parser ByteString
-pLine = takeWhileP Nothing (/= ascii '\n') <* single (ascii '\n')
+pLine :: Parser Text
+pLine = takeWhileP Nothing (/= '\n') <* single ('\n')

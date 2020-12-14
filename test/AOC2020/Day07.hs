@@ -4,7 +4,6 @@ module AOC2020.Day07 (day7) where
 
 import AOC2020.Common
 import Control.Applicative hiding (many)
-import Data.ByteString (ByteString)
 import Data.Map (Map)
 import Data.Map qualified as M
 import Data.Maybe
@@ -12,8 +11,6 @@ import Data.Set (Set)
 import Data.Set qualified as S
 import Parse
 import Test.Hspec
-import Text.Megaparsec
-import Text.Megaparsec.Byte
 
 day7 :: Spec
 day7 = do
@@ -34,7 +31,7 @@ day7 = do
         go b = maybe 0 (sum . fmap (\(n, b') -> n + n * go b')) $ M.lookup b m
      in go sg
 
-data Bag = Bag ByteString ByteString
+data Bag = Bag Text Text
   deriving (Eq, Ord, Show)
 
 parseBags :: Parser [(Bag, [(Int, Bag)])]

@@ -3,11 +3,9 @@
 
 module Block where
 
-import Data.ByteString (ByteString)
-import Data.ByteString qualified as BS
+import Data.Text qualified as T
 import Data.Vector (Vector)
 import Data.Vector qualified as V
-import Data.Word
 import Parse
 
 -- 00 01 02 03
@@ -90,13 +88,13 @@ showBlock f (Block w _ v) = unlines $ go (V.toList v)
   go [] = []
   go ls = let (h, t) = splitAt w ls in (f <$> h) : go t
 
-pBlock :: Parser (Block Word8)
+pBlock :: Parser (Block Char)
 pBlock = mkArray <$> pBlockLines
  where
-  mkArray (w, h, bss) = mkBlock w h (bss >>= BS.unpack)
-  pBlockLines :: Parser (Int, Int, [ByteString])
+  mkArray (w, h, bss) = mkBlock w h (bss >>= T.unpack)
+  pBlockLines :: Parser (Int, Int, [Text])
   pBlockLines = do
     h <- pLine
-    let n = BS.length h
-    t <- many $ pSuchThat pLine (\l -> if BS.length l == n then pure l else Left empty)
+    let n = T.length h
+    t <- many $ pSuchThat pLine (\l -> if T.length l == n then pure l else Left empty)
     pure (n, 1 + length t, h : t)
