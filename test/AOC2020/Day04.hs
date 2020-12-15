@@ -56,5 +56,5 @@ parsePP = sepBy1 entry eol
 day4 :: Spec
 day4 = do
   pps <- runIO $ parseFile "input/day4.txt" (parsePP <* eof)
-  it "star 1" $ expectationFailure "MISSING"
+  it "star 1" $ pending
   star2 127 $ length $ filter (\pp -> all (uncurry validField) pp && validpp pp) pps

@@ -57,6 +57,7 @@ test-suite spec
     AOC2020.Day12
     AOC2020.Day13
     AOC2020.Day14
+    AOC2020.Day15
 
   build-depends:
     , aoc2020
