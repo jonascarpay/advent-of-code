@@ -5,12 +5,8 @@
 module AOC2020.Day06 (day6) where
 
 import AOC2020.Common
-import Data.List.Split hiding (chunk, sepBy)
-import Lib
-import Linear
-import Parse
+import Data.List.Split (splitOn)
 import Test.Hspec
-import Text.Megaparsec.Byte.Lexer qualified as Lex
 
 day6 :: Spec
 day6 = do

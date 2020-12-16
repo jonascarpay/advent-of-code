@@ -10,6 +10,23 @@ import Control.Monad.State
 import Data.Bool
 import Data.Maybe
 
+-- Not very clever; just repeatedly filters out candidates
+-- that already uniquely belong to another field
+assignUnique :: Eq c => [(r, [c])] -> Maybe [(r, c)]
+assignUnique rs
+  | length singles == length rs = Just singles
+  | length singles == 0 = Nothing
+  | otherwise = assignUnique rs'
+ where
+  singles =
+    rs >>= \case
+      (r, [c]) -> [(r, c)]
+      (r, _) -> []
+  solveds = snd <$> singles
+  rs' = flip fmap rs $ \case
+    (r, [c]) -> (r, [c])
+    (r, cs) -> (r, filter (`notElem` solveds) cs)
+
 findFix :: Eq a => (a -> a) -> a -> a
 findFix f = go where go a = let a' = f a in if a == a' then a else go a'
 
