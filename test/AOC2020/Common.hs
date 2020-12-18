@@ -1,4 +1,7 @@
-module AOC2020.Common where
+module AOC2020.Common (
+  module AOC2020.Common,
+  module Test.Hspec,
+) where
 
 import Test.Hspec
 

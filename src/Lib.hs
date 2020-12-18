@@ -9,6 +9,10 @@ import Control.Monad.Reader
 import Control.Monad.State
 import Data.Bool
 import Data.Maybe
+import Linear
+
+adjacent :: (Eq (t Int), Traversable t) => t Int -> [t Int]
+adjacent v = filter (/= v) . traverse (\x -> [x -1 .. x + 1]) $ v
 
 -- Not very clever; just repeatedly filters out candidates
 -- that already uniquely belong to another field
