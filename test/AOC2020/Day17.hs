@@ -10,7 +10,6 @@ module AOC2020.Day17 (day17) where
 import AOC2020.Common
 import Block
 import Control.Applicative
-import Control.Monad
 import Data.Set (Set)
 import Data.Set qualified as S
 import Lib
@@ -22,7 +21,7 @@ step s = S.fromList $ filter mem vs
  where
   v = S.toList s
   lo = foldr (liftA2 min) maxBound v
-  hi = foldr (liftA2 min) maxBound v
+  hi = foldr (liftA2 max) minBound v
   vs = sequence $ liftA2 (\l h -> [l -1 .. h + 1]) lo hi
   mem v =
     let n = length $ filter (`S.member` s) (adjacent v)
