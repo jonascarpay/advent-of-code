@@ -22,6 +22,7 @@ import AOC2020.Day15
 import AOC2020.Day16
 import AOC2020.Day17
 import AOC2020.Day18
+import AOC2020.Day19
 import Test.Hspec
 
 aoc2020 :: Spec
@@ -44,3 +45,4 @@ aoc2020 = do
   describe "day 16" day16
   describe "day 17" day17
   describe "day 18" day18
+  describe "day 19" day19
