@@ -10,7 +10,6 @@ import Data.Maybe
 import Data.Set (Set)
 import Data.Set qualified as S
 import Parse
-import Test.Hspec
 
 day7 :: Spec
 day7 = do

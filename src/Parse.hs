@@ -11,7 +11,7 @@ import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Text.IO qualified as T
 import Data.Void
-import Text.Megaparsec
+import Text.Megaparsec hiding (count)
 import Text.Megaparsec.Char
 import Text.Megaparsec.Char.Lexer qualified as Lex
 
@@ -21,7 +21,7 @@ decimal :: Parser Int
 decimal = Lex.decimal
 
 word :: Parser Text
-word = takeWhileP Nothing (\c -> c >= 'a' && c <= 'z')
+word = takeWhile1P Nothing (\c -> c >= 'a' && c <= 'z')
 
 parseFile :: FilePath -> Parser a -> IO a
 parseFile fp p = do

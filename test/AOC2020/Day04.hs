@@ -7,7 +7,6 @@ import Control.Applicative hiding (many)
 import Data.Text qualified as T
 import Debug.Trace
 import Parse
-import Test.Hspec
 
 validpp :: [(Text, Text)] -> Bool
 validpp ss = case lookup "cid" ss of

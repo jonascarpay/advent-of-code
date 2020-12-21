@@ -9,7 +9,6 @@ import Data.Foldable (toList)
 import Data.Sequence qualified as Q
 import Lib
 import Linear hiding (E)
-import Test.Hspec
 
 f :: Int -> [Int] -> [(Q.Seq Int, Int)]
 f n l = go (Q.fromList $ take n l) (drop n l)
@@ -26,7 +25,7 @@ look goal = go
   go (a : b : t) = maybe (go (b : t)) id $ single (a + b) [b, a] t
   go _ = []
   single :: Int -> [Int] -> [Int] -> Maybe [Int]
-  single n _ [] = Nothing
+  single _ _ [] = Nothing
   single n run (h : t) = case compare n goal of
     EQ -> Just run
     LT -> single (n + h) (h : run) t

@@ -8,8 +8,8 @@ import AOC2020.Common
 import Block
 import Data.Foldable (toList)
 import Lib
+import Linear
 import Parse
-import Test.Hspec
 
 data Square = Free | Occ | Floor
   deriving (Eq, Show)
@@ -17,35 +17,31 @@ data Square = Free | Occ | Floor
 step1 :: Block Square -> Block Square
 step1 sq = imap f sq
  where
-  kings (x, y) = [(x', y') | x' <- [x -1, x, x + 1], y' <- [y -1, y, y + 1], not (x' == x && y == y')]
-  f :: (Int, Int) -> Square -> Square
+  f :: V2 Int -> Square -> Square
   f c q =
-    let surr = (>>= toList) $ (\(x, y) -> bIndex x y sq) <$> kings c :: [Square]
+    let surr = (>>= toList) $ (\x -> bIndex x sq) <$> adjacent c :: [Square]
      in case (q, length (filter (== Occ) surr)) of
           (Free, n) | n == 0 -> Occ
           (Occ, n) | n >= 4 -> Free
           (q', _) -> q'
 
-dir :: [(Int, Int)]
-dir = [(x, y) | x <- [-1, 0, 1], y <- [-1, 0, 1], not (x == 0 && y == 0)]
-
 step2 :: Block Square -> Block Square
 step2 sq = imap f sq
  where
-  f :: (Int, Int) -> Square -> Square
-  f (x, y) q = case (q, length (filter id surr)) of
+  f :: V2 Int -> Square -> Square
+  f v q = case (q, length (filter id surr)) of
     (Free, n) | n == 0 -> Occ
     (Occ, n) | n >= 5 -> Free
     (q', _) -> q'
    where
-    surr = scan (x, y) <$> dir
-    scan (x, y) (dx, dy) = go (x + dx, y + dy)
+    surr = scan v <$> adjacent 0
+    scan x d = go (x + d)
      where
-      go (x, y) = case bIndex x y sq of
+      go w = case bIndex w sq of
         Just Occ -> True
         Nothing -> False
         Just Free -> False
-        _ -> go (x + dx, y + dy)
+        _ -> go (w + d)
 
 day11 :: Spec
 day11 = do

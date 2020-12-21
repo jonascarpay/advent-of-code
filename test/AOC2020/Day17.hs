@@ -30,11 +30,11 @@ step s = S.fromList $ filter mem vs
 day17 :: Spec
 day17 = do
   p <- runIO $ parseFile "input/day17.txt" pBlock
-  let p' = imap (\(x, y) a -> (V3 x y 0, a)) p
+  let p' = imap (\(V2 x y) a -> (V3 x y 0, a)) p
       l = S.fromList $ map fst $ filter ((== '#') . snd) $ bList p'
       ss = iterate step l
    in star1 401 $ length $ ss !! 6
-  let p' = imap (\(x, y) a -> (V4 x y 0 0, a)) p
+  let p' = imap (\(V2 x y) a -> (V4 x y 0 0, a)) p
       l = S.fromList $ map fst $ filter ((== '#') . snd) $ bList p'
       ss = iterate step l
    in star2 2224 $ length $ ss !! 6

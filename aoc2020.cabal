@@ -11,6 +11,7 @@ common deps
   build-depends:
     , base          >=4.13.0.0 && <5
     , containers
+    , lens
     , linear
     , megaparsec
     , mtl
@@ -20,18 +21,18 @@ common deps
     , vector
 
   default-language:   Haskell2010
+  default-extensions: ImportQualifiedPost
   ghc-options:
     -Wall -Wcompat -Widentities -Wincomplete-uni-patterns
     -Wincomplete-record-updates -Wredundant-constraints
     -fhide-source-paths -Wpartial-fields -fno-warn-unused-do-bind
-
-  default-extensions: ImportQualifiedPost
 
 library
   import:          deps
   hs-source-dirs:  src
   exposed-modules:
     Block
+    Histogram
     Lib
     Parse
     Runners
@@ -62,6 +63,12 @@ test-suite spec
     AOC2020.Day16
     AOC2020.Day17
     AOC2020.Day18
+    AOC2020.Day19
+    AOC2020.Day21
+
+  ghc-options:
+    -Wall -fno-warn-incomplete-uni-patterns
+    -fno-warn-incomplete-patterns
 
   build-depends:
     , aoc2020

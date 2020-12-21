@@ -8,11 +8,18 @@ import Control.Applicative hiding (many)
 import Control.Monad.Reader
 import Control.Monad.State
 import Data.Bool
+import Data.Foldable (toList)
 import Data.Maybe
 import Linear
 
+count :: Foldable t => (a -> Bool) -> t a -> Int
+count p = length . filter p . toList
+
 adjacent :: (Eq (t Int), Traversable t) => t Int -> [t Int]
 adjacent v = filter (/= v) . traverse (\x -> [x -1 .. x + 1]) $ v
+
+-- orthogonal :: (Eq (t Int), Traversable t) => t Int -> [t Int]
+-- orthogonal v = filter (/= v) . traverse (\x -> [x -1 .. x + 1]) $ v
 
 -- Not very clever; just repeatedly filters out candidates
 -- that already uniquely belong to another field
