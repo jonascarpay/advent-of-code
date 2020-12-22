@@ -28,24 +28,24 @@ assignUnique rs
   | length singles == length rs = Just singles
   | length singles == 0 = Nothing
   | otherwise = assignUnique rs'
- where
-  singles =
-    rs >>= \case
-      (r, [c]) -> [(r, c)]
-      (r, _) -> []
-  solveds = snd <$> singles
-  rs' = flip fmap rs $ \case
-    (r, [c]) -> (r, [c])
-    (r, cs) -> (r, filter (`notElem` solveds) cs)
+  where
+    singles =
+      rs >>= \case
+        (r, [c]) -> [(r, c)]
+        (r, _) -> []
+    solveds = snd <$> singles
+    rs' = flip fmap rs $ \case
+      (r, [c]) -> (r, [c])
+      (r, cs) -> (r, filter (`notElem` solveds) cs)
 
 findFix :: Eq a => (a -> a) -> a -> a
 findFix f = go where go a = let a' = f a in if a == a' then a else go a'
 
 fromBE :: [Bool] -> Int
 fromBE = go 0
- where
-  go n [] = n
-  go n (b : t) = go (2 * n + bool 0 1 b) t
+  where
+    go n [] = n
+    go n (b : t) = go (2 * n + bool 0 1 b) t
 
 -- https://en.wikipedia.org/wiki/Chinese_remainder_theorem
 -- https://rosettacode.org/wiki/Chinese_remainder_theorem
@@ -54,13 +54,13 @@ fromBE = go 0
 -- result is x such that for all (b,z), x%z = b
 crt :: [(Int, Int)] -> Int
 crt pairs = sum (f <$> pairs) `mod` n
- where
-  n = product $ snd <$> pairs
+  where
+    n = product $ snd <$> pairs
 
-  f (b', z') =
-    let n' = div n z'
-        x' = fromMaybe (error $ "no modular inverse for " <> show (n', b')) $ modInv n' z'
-     in b' * n' * x'
+    f (b', z') =
+      let n' = div n z'
+          x' = fromMaybe (error $ "no modular inverse for " <> show (n', b')) $ modInv n' z'
+       in b' * n' * x'
 
 -- modular inverse x of b wrt. z
 -- i.e. (x * b) % z = 1
@@ -83,13 +83,13 @@ eea a b =
 
 uniqueTuples :: (Traversable t, Applicative t) => [a] -> [t a]
 uniqueTuples = uniques (pure ())
- where
-  uniques :: Traversable t => t () -> [a] -> [t a]
-  uniques base as =
-    flip evalStateT as $
-      forM base $
-        const $
-          fix $ \f ->
-            get >>= \case
-              [] -> empty
-              (h : t) -> put t >> (pure h <|> f)
+  where
+    uniques :: Traversable t => t () -> [a] -> [t a]
+    uniques base as =
+      flip evalStateT as $
+        forM base $
+          const $
+            fix $ \f ->
+              get >>= \case
+                [] -> empty
+                (h : t) -> put t >> (pure h <|> f)

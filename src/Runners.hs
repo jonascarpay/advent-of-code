@@ -18,6 +18,7 @@ import Data.Bits
 import Data.Bool
 import Data.Char
 import Data.Either
+import Data.Foldable
 import Data.Foldable (fold, toList)
 import Data.IntMap (IntMap)
 import Data.IntMap qualified as IM
@@ -35,61 +36,12 @@ import Data.Sequence qualified as Seq
 import Data.Set (Set)
 import Data.Set qualified as S
 import Data.Text qualified as T
+import Data.Vector (Vector)
 import Data.Vector qualified as V
-import Debug.Trace
 import Histogram qualified as H
 import Lib
 import Linear hiding (E)
-import Parse
-
-parse22 :: Parser ([Int], [Int])
-parse22 = do
-  takeWhileP Nothing (/= '\n') <* eol
-  p1 <- many $ decimal <* eol
-  eol
-  takeWhileP Nothing (/= '\n') <* eol
-  p2 <- many $ decimal <* eol
-  pure (p1, p2)
-
-play [] xs = Right xs
-play xs [] = Left xs
-play (l : ls) (r : rs) = case compare l r of
-  LT -> play ls (rs <> [r, l])
-  GT -> play (ls <> [l, r]) rs
-  _ -> undefined
-
-type Hand = Seq Int
-
-type Memo = Map (Hand, Hand) (Either Hand Hand)
-
-playround :: Set (Hand, Hand) -> Memo -> Hand -> Hand -> (Memo, Either Hand Hand)
-playround c1 s h1 h2
-  | Seq.null h1 = (M.insert (h1, h2) (Right h2) s, Right h2)
-  | Seq.null h2 = (M.insert (h1, h2) (Left h1) s, Left h1)
-  | S.member (h1, h2) c1 = (M.insert (h1, h2) (Right h1) s, Right h1)
-  | M.member (h1, h2) s = (s, s M.! (h1, h2))
-playround c1 s h1@(l :<| ls) h2@(r :<| rs)
-  | length ls >= l && length rs >= r = case playround mempty s ls rs of
-    (s', Right res) -> playround (S.insert (h1, h2) c1) (M.insert (h1, h2) (Right res) s') ls (rs :|> r :|> l)
-    (s', Left res) -> playround (S.insert (h1, h2) c1) (M.insert (h1, h2) (Left res) s') (ls :|> l :|> r) rs
-playround c1 s h1@(l :<| ls) h2@(r :<| rs) =
-  case compare l r of
-    LT -> playround (S.insert (h1, h2) c1) s ls (rs :|> r :|> l)
-    GT -> playround (S.insert (h1, h2) c1) s (ls :|> l :|> r) rs
-    _ -> undefined
-
-f (Left x) = x
-f (Right x) = x
-
-day22 :: IO ()
-day22 = do
-  (l, r) <- parseFile "input/day22ex.txt" parse22
-  -- input <- lines <$> readFile "input/day22.txt"
-  -- let final = f $ play l r
-  -- print $ sum $ zipWith (*) (reverse final) [1 ..]
-  let (_, x) = playround mempty mempty (Seq.fromList l) (Seq.fromList r)
-  let (final) = toList $ f $ x
-  print $ sum $ zipWith (*) (reverse final) [1 ..]
+import Parse hiding (State)
 
 {--
    -- Day 20 crap
