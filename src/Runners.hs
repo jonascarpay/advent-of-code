@@ -29,7 +29,9 @@ import Data.Map (Map)
 import Data.Map qualified as M
 import Data.Maybe
 import Data.Ord
+import Data.Sequence (Seq ((:<|), (:|>)))
 import Data.Sequence qualified as Q
+import Data.Sequence qualified as Seq
 import Data.Set (Set)
 import Data.Set qualified as S
 import Data.Text qualified as T
@@ -40,45 +42,54 @@ import Lib
 import Linear hiding (E)
 import Parse
 
-pp :: Parser [([Text], [Text])]
-pp = do
-  let sub = do
-        ws <- some (word <* single ' ')
-        chunk "(contains "
-        is <- sepBy word (chunk ", ")
-        chunk ")"
-        pure (ws, is)
-  many $ sub <* eol
+parse22 :: Parser ([Int], [Int])
+parse22 = do
+  takeWhileP Nothing (/= '\n') <* eol
+  p1 <- many $ decimal <* eol
+  eol
+  takeWhileP Nothing (/= '\n') <* eol
+  p2 <- many $ decimal <* eol
+  pure (p1, p2)
 
-solve2 :: [([Text], [Text])] -> (Int, Text)
-solve2 cands = (occurs, dangers)
-  where
-    occurs :: Int
-    occurs = sum $ (`H.lookup` nosh) <$> nos
-    dangers :: Text
-    dangers = T.intercalate "," $ fmap snd $ fromJust $ assignUnique (fmap S.toList <$> M.toList allergs)
-    nosh :: H.Histogram Text
-    nosh = H.fromList (cands >>= fst)
-    nos :: [Text]
-    nos = filter (`S.notMember` hasAllerg) foods
-    allergs :: Map Text (Set Text)
-    allergs = go mempty cands
-    foods :: [Text]
-    foods = S.toList $ S.fromList $ cands >>= fst
-    hasAllerg :: Set Text
-    hasAllerg = fold $ M.elems allergs
-    go :: Map Text (Set Text) -> [([Text], [Text])] -> Map Text (Set Text)
-    go m [] = m
-    go m ((is, as) : t) =
-      let m' = foldr (\a n -> M.insertWith S.intersection a (S.fromList is) n) m as
-       in go m' t
+play [] xs = Right xs
+play xs [] = Left xs
+play (l : ls) (r : rs) = case compare l r of
+  LT -> play ls (rs <> [r, l])
+  GT -> play (ls <> [l, r]) rs
+  _ -> undefined
 
-day21 :: IO ()
-day21 = do
-  p <- parseFile "input/day21.txt" pp
-  let (s1, s2) = solve2 p
-  print s1
-  print s2
+type Hand = Seq Int
+
+type Memo = Map (Hand, Hand) (Either Hand Hand)
+
+playround :: Set (Hand, Hand) -> Memo -> Hand -> Hand -> (Memo, Either Hand Hand)
+playround c1 s h1 h2
+  | Seq.null h1 = (M.insert (h1, h2) (Right h2) s, Right h2)
+  | Seq.null h2 = (M.insert (h1, h2) (Left h1) s, Left h1)
+  | S.member (h1, h2) c1 = (M.insert (h1, h2) (Right h1) s, Right h1)
+  | M.member (h1, h2) s = (s, s M.! (h1, h2))
+playround c1 s h1@(l :<| ls) h2@(r :<| rs)
+  | length ls >= l && length rs >= r = case playround mempty s ls rs of
+    (s', Right res) -> playround (S.insert (h1, h2) c1) (M.insert (h1, h2) (Right res) s') ls (rs :|> r :|> l)
+    (s', Left res) -> playround (S.insert (h1, h2) c1) (M.insert (h1, h2) (Left res) s') (ls :|> l :|> r) rs
+playround c1 s h1@(l :<| ls) h2@(r :<| rs) =
+  case compare l r of
+    LT -> playround (S.insert (h1, h2) c1) s ls (rs :|> r :|> l)
+    GT -> playround (S.insert (h1, h2) c1) s (ls :|> l :|> r) rs
+    _ -> undefined
+
+f (Left x) = x
+f (Right x) = x
+
+day22 :: IO ()
+day22 = do
+  (l, r) <- parseFile "input/day22ex.txt" parse22
+  -- input <- lines <$> readFile "input/day22.txt"
+  -- let final = f $ play l r
+  -- print $ sum $ zipWith (*) (reverse final) [1 ..]
+  let (_, x) = playround mempty mempty (Seq.fromList l) (Seq.fromList r)
+  let (final) = toList $ f $ x
+  print $ sum $ zipWith (*) (reverse final) [1 ..]
 
 {--
    -- Day 20 crap
