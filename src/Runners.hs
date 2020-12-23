@@ -14,7 +14,7 @@ import Control.Monad
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Maybe
 import Control.Monad.Trans.State
-import Data.Bits
+import Data.Bits hiding (rotate)
 import Data.Bool
 import Data.Char
 import Data.Either
@@ -38,11 +38,51 @@ import Data.Set qualified as S
 import Data.Text qualified as T
 import Data.Vector (Vector)
 import Data.Vector qualified as V
+import Debug.Trace
 import Histogram qualified as H
 import Lib
-import Linear hiding (E)
+import Linear hiding (E, rotate)
 import Parse hiding (State)
 
+exinput :: Vector Int
+exinput = V.fromList [3, 8, 9, 1, 2, 5, 4, 6, 7]
+
+input :: Vector Int
+input = V.fromList [1, 8, 6, 5, 2, 4, 9, 7, 3]
+
+move :: Int -> Int -> Int -> Vector Int -> Vector Int
+move lo hi n v = V.generate n f
+  where
+    (curr, pick) = let v' = V.take 4 v in (V.head v', V.tail v')
+    trgI = go (curr -1)
+      where
+        go :: Int -> Int
+        go n
+          | n < lo = go hi
+          | V.elem n pick = go (n -1)
+          | otherwise = fromJust $ V.elemIndex n v
+    f i =
+      case () of
+        _
+          | i + 1 == n -> v V.! 0
+          | i < trgI -3 -> v V.! (i + 4)
+          | i >= trgI -> v V.! (i + 1)
+          | otherwise -> pick V.! (i - trgI + 3)
+
+rotate :: Int -> Vector Int -> Vector Int
+rotate m as = let (p, q) = V.splitAt (mod m (V.length as)) as in q <> p
+
+order :: Vector Int -> Vector Int
+order t = V.tail $ rotate (fromJust $ V.elemIndex 1 t) t
+
+day23 :: IO ()
+day23 = do
+  print $
+    order $
+      let v = input
+       in iterate (move (V.minimum v) (V.maximum v) (V.length v)) v !! 100
+
+-- star2 [1] $ take 2 $ order $ iterate move (input <> [10 .. 1000000]) !! 10000000
 {--
    -- Day 20 crap
 ptile :: Parser [(Int, Block Char)]
