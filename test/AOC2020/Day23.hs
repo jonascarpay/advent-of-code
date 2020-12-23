@@ -83,4 +83,4 @@ day23 = do
   star1 (V.fromList [4, 5, 9, 8, 3, 6, 2, 7]) $ play input 100
 
   star2ex 149245887792 $ V.product $ V.take 2 $ play exinput2 10_000_000
-  focus $ star2 111080192688 $ V.product $ V.take 2 $ play input2 10_000_000 -- too low
+  star2 111080192688 $ V.product $ V.take 2 $ play input2 10_000_000 -- too low

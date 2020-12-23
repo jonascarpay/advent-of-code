@@ -18,8 +18,8 @@ count p = length . filter p . toList
 adjacent :: (Eq (t Int), Traversable t) => t Int -> [t Int]
 adjacent v = filter (/= v) . traverse (\x -> [x -1 .. x + 1]) $ v
 
--- orthogonal :: (Eq (t Int), Traversable t) => t Int -> [t Int]
--- orthogonal v = filter (/= v) . traverse (\x -> [x -1 .. x + 1]) $ v
+orthogonal :: (Eq (t Int), Traversable t, Applicative t) => t Int -> [t Int]
+orthogonal v = filter (\v' -> sum (liftA2 (\a b -> abs (a - b)) v' v) == 1) $ adjacent v
 
 -- Not very clever; just repeatedly filters out candidates
 -- that already uniquely belong to another field

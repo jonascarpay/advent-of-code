@@ -23,6 +23,7 @@ import AOC2020.Day16
 import AOC2020.Day17
 import AOC2020.Day18
 import AOC2020.Day19
+import AOC2020.Day20
 import AOC2020.Day21
 import AOC2020.Day22
 import AOC2020.Day23
@@ -49,6 +50,7 @@ aoc2020 = do
   describe "day 17" day17
   describe "day 18" day18
   describe "day 19" day19
+  describe "day 20" day20
   describe "day 21" day21
   describe "day 22" day22
-  fdescribe "day 23" day23
+  describe "day 23" day23
