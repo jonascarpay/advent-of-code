@@ -1,28 +1,29 @@
-module Histogram (
-  Histogram,
-  toMap,
-  increment,
-  decrement,
-  Histogram.lookup,
-  (!),
-  add,
-  set,
-  reset,
-  zero,
-  nonzero,
-  empty,
-  mapKeys,
-  singleton,
-  isSubsetOf,
-  isSubsetOfBy,
-  fromList,
-  toList,
-  allKeys,
-) where
-
-import Data.Maybe (fromMaybe)
+module Histogram
+  ( Histogram,
+    toMap,
+    increment,
+    decrement,
+    Histogram.lookup,
+    (!),
+    add,
+    set,
+    reset,
+    zero,
+    nonzero,
+    empty,
+    mapKeys,
+    count,
+    singleton,
+    isSubsetOf,
+    isSubsetOfBy,
+    fromList,
+    toList,
+    allKeys,
+  )
+where
 
 import Data.Map.Strict qualified as M
+import Data.Maybe (fromMaybe)
 
 -- | A simple 'Data.Map'-based histogram for some key.
 newtype Histogram k = Histogram
@@ -51,18 +52,16 @@ increment k (Histogram m) = Histogram $ M.insertWith (+) k 1 m
 decrement :: Ord k => k -> Histogram k -> Histogram k
 decrement k (Histogram m) = Histogram $ M.update (clip . subtract 1) k m
 
-{- | Increase a key's count by an arbitrary number.
-   Can also be used to decrease by passing a negative value.
-   If the count falls below zero, it's set to 0.
--}
+-- | Increase a key's count by an arbitrary number.
+--   Can also be used to decrease by passing a negative value.
+--   If the count falls below zero, it's set to 0.
 add :: Ord k => Int -> k -> Histogram k -> Histogram k
 add n k (Histogram m) = Histogram $ M.alter f k m
- where
-  f nOld = clip $ fromMaybe 0 nOld + n
+  where
+    f nOld = clip $ fromMaybe 0 nOld + n
 
-{- | Set a key's count to an exact value.
-   Nonpositive numbers clip to 0.
--}
+-- | Set a key's count to an exact value.
+--   Nonpositive numbers clip to 0.
 set :: Ord k => Int -> k -> Histogram k -> Histogram k
 set n k (Histogram m) = Histogram $ (if n > 0 then flip M.insert n else M.delete) k m
 
@@ -82,9 +81,8 @@ zero k = not . nonzero k
 empty :: Histogram k -> Bool
 empty (Histogram h) = null h
 
-{- | Applies a function to every key.
-   If two keys in the original map to the same value, their counts are combined.
--}
+-- | Applies a function to every key.
+--   If two keys in the original map to the same value, their counts are combined.
 mapKeys :: Ord k2 => (k1 -> k2) -> Histogram k1 -> Histogram k2
 mapKeys f (Histogram m) = Histogram $ M.mapKeysWith (+) f m
 
@@ -112,6 +110,9 @@ toList (Histogram m) = M.toList m
 
 lookup :: Ord k => k -> Histogram k -> Int
 lookup k (Histogram m) = fromMaybe 0 (m M.!? k)
+
+count :: Ord a => [a] -> [(a, Int)]
+count = toList . fromList
 
 (!) :: Ord k => Histogram k -> k -> Int
 (!) = flip Histogram.lookup
