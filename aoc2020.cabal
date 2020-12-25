@@ -69,6 +69,7 @@ test-suite spec
     AOC2020.Day22
     AOC2020.Day23
     AOC2020.Day24
+    AOC2020.Day25
 
   ghc-options:
     -Wall -fno-warn-incomplete-uni-patterns
