@@ -12,7 +12,7 @@ import Test.Hspec
 
 day1 :: Spec
 day1 = do
-  input :: [Int] <- runIO $ parseFile "input/day1.txt" $ pLines decimal
+  input :: [Int] <- runIO $ parseFile "input/2020/day1.txt" $ pLines decimal
   star1 876459
     . product
     . fmap product

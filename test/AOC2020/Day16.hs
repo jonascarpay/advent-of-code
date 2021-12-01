@@ -45,7 +45,7 @@ matchf (Rule _ a b x y) f = (f >= a && f <= b) || (f >= x && f <= y)
 
 day16 :: Spec
 day16 = do
-  (rs, self, others) <- runIO $ parseFile "input/day16.txt" parser
+  (rs, self, others) <- runIO $ parseFile "input/2020/day16.txt" parser
   star1 20091 $ sum [f | t <- others, f <- t, not $ any (`matchf` f) rs]
   star2 2325343130651 $
     let nf = length self

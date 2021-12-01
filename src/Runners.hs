@@ -19,7 +19,6 @@ import Data.Bool
 import Data.Char
 import Data.Either
 import Data.Foldable
-import Data.Foldable (fold, toList)
 import Data.IntMap (IntMap)
 import Data.IntMap qualified as IM
 import Data.IntSet (IntSet)
@@ -39,7 +38,7 @@ import Data.Text qualified as T
 import Data.Vector (Vector)
 import Data.Vector qualified as V
 import Debug.Trace
-import Histogram qualified as H
+import Data.Histogram qualified as H
 import Lib
 import Linear hiding (E, rotate, trace)
 import Parse hiding (State)

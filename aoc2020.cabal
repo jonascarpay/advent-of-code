@@ -9,8 +9,9 @@ copyright:     2020 Jonas Carpay
 
 common deps
   build-depends:
-    , base          >=4.13.0.0 && <5
+    , base              >=4.13.0.0 && <5
     , containers
+    , histogram-simple
     , lens
     , linear
     , megaparsec
@@ -32,7 +33,6 @@ library
   hs-source-dirs:  src
   exposed-modules:
     Block
-    Histogram
     Lib
     Parse
     Runners

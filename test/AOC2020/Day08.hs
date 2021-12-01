@@ -30,7 +30,7 @@ toggle (Nop n) = Jmp n
 
 day8 :: Spec
 day8 = do
-  prg <- runIO $ V.fromList . fmap (parseop . words) . filter (/= []) . lines <$> readFile "input/day8.txt"
+  prg <- runIO $ V.fromList . fmap (parseop . words) . filter (/= []) . lines <$> readFile "input/2020/day8.txt"
   let go acc pc pcs
         | S.member pc pcs = acc
         | otherwise = case prg V.! pc of

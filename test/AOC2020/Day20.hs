@@ -13,7 +13,7 @@ import Data.Map qualified as M
 import Data.Maybe
 import Data.Vector (Vector)
 import Data.Vector qualified as V
-import Histogram qualified as H
+import Data.Histogram qualified as H
 import Lib
 import Linear hiding (E, rotate, trace)
 import Parse hiding (State)
@@ -119,8 +119,8 @@ monster =
 
 day20 :: Spec
 day20 = do
-  pex <- runIO $ parseFile "input/day20ex.txt" ptile
-  p <- runIO $ parseFile "input/day20.txt" ptile
+  pex <- runIO $ parseFile "input/2020/day20ex.txt" ptile
+  p <- runIO $ parseFile "input/2020/day20.txt" ptile
   star1ex 20899048083289 $ ex1 pex
   star1 22878471088273 $ ex1 p
   star2ex 273 $ ex2 pex

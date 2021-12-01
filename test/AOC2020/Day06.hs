@@ -10,6 +10,6 @@ import Test.Hspec
 
 day6 :: Spec
 day6 = do
-  gs <- runIO $ filter (not . null) . splitOn [""] . lines <$> readFile "input/day6.txt"
+  gs <- runIO $ filter (not . null) . splitOn [""] . lines <$> readFile "input/2020/day6.txt"
   star1 3117 $ length [() | g <- gs, c <- ['a' .. 'z'], all (elem c) g]
   star2 6680 $ length [() | g <- gs, c <- ['a' .. 'z'], any (elem c) g]

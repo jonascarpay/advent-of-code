@@ -31,9 +31,9 @@ s2 contains =
 
 day7 :: Spec
 day7 = do
-  containsEx1 <- runIO $ parseFile "input/day7ex.txt" parseBags
-  containsEx2 <- runIO $ parseFile "input/day7ex2.txt" parseBags
-  contains <- runIO $ parseFile "input/day7.txt" parseBags
+  containsEx1 <- runIO $ parseFile "input/2020/day7ex.txt" parseBags
+  containsEx2 <- runIO $ parseFile "input/2020/day7ex2.txt" parseBags
+  contains <- runIO $ parseFile "input/2020/day7.txt" parseBags
   star1ex 4 $ s1 containsEx1
   star1 274 $ s1 contains
   star2ex 126 $ s2 containsEx2

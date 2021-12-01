@@ -10,7 +10,7 @@ module AOC2020.Day24 (day24) where
 import AOC2020.Common
 import Data.Set (Set)
 import Data.Set qualified as S
-import Histogram qualified as H
+import Data.Histogram qualified as H
 import Linear hiding (E)
 import Parse
 
@@ -54,16 +54,19 @@ step s = S.fromList $ filter next adjacents
             then not $ n == 0 || n > 2
             else n == 2
 
+count :: Ord a => [a] -> [(a,Int)]
+count = H.toList . H.fromList
+
 s1 :: [[Dir]] -> Int
-s1 = length . filter (odd . snd) . H.count . fmap (sum . fmap toC)
+s1 = length . filter (odd . snd) . count . fmap (sum . fmap toC)
 
 s2 :: [[Dir]] -> [Int]
-s2 = fmap S.size . iterate step . S.fromList . fmap fst . filter (odd . snd) . H.count . fmap (sum . fmap toC)
+s2 = fmap S.size . iterate step . S.fromList . fmap fst . filter (odd . snd) . count . fmap (sum . fmap toC)
 
 day24 :: Spec
 day24 = do
-  p <- runIO $ parseFile "input/day24.txt" parse24
-  pex <- runIO $ parseFile "input/day24ex.txt" parse24
+  p <- runIO $ parseFile "input/2020/day24.txt" parse24
+  pex <- runIO $ parseFile "input/2020/day24ex.txt" parse24
   star1ex 10 $ s1 pex
   star1 420 $ s1 p
   star2ex 2208 $ s2 pex !! 100

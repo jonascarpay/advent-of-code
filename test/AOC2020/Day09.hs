@@ -33,7 +33,7 @@ look goal = go
 
 day9 :: Spec
 day9 = do
-  nums :: [Int] <- runIO $ fmap read . lines <$> readFile "input/day9.txt"
+  nums :: [Int] <- runIO $ fmap read . lines <$> readFile "input/2020/day9.txt"
   star1 375054920 $ snd . head . filter (not . valid) $ f 25 nums
   let [(_, inv)] = filter (not . valid) $ f 25 nums
   let run = look inv nums

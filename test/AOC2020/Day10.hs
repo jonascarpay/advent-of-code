@@ -13,7 +13,7 @@ import Test.Hspec
 
 day10 :: Spec
 day10 = do
-  nums :: [Int] <- runIO $ fmap read . lines <$> readFile "input/day10.txt"
+  nums :: [Int] <- runIO $ fmap read . lines <$> readFile "input/2020/day10.txt"
   let go :: Int -> Int -> Int -> [Int] -> Int
       go n n1 n3 [] = (n1 * (n3 + 1))
       go n n1 n3 (x : xs)

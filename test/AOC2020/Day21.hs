@@ -13,7 +13,7 @@ import Data.Maybe
 import Data.Set (Set)
 import Data.Set qualified as S
 import Data.Text qualified as T
-import Histogram qualified as H
+import Data.Histogram qualified as H
 import Lib
 import Parse
 
@@ -52,7 +52,7 @@ solve2 cands = (occurs, dangers)
 
 day21 :: Spec
 day21 = do
-  p <- runIO $ parseFile "input/day21.txt" pp
+  p <- runIO $ parseFile "input/2020/day21.txt" pp
   let (s1, s2) = solve2 p
   star1 2324 s1
   star2 "bxjvzk,hqgqj,sp,spl,hsksz,qzzzf,fmpgn,tpnnkc" s2

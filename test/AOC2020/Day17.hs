@@ -29,7 +29,7 @@ step s = S.fromList $ filter mem vs
 
 day17 :: Spec
 day17 = do
-  p <- runIO $ parseFile "input/day17.txt" pBlock
+  p <- runIO $ parseFile "input/2020/day17.txt" pBlock
   let p' = imap (\(V2 x y) a -> (V3 x y 0, a)) p
       l = S.fromList $ map fst $ filter ((== '#') . snd) $ bList p'
       ss = iterate step l

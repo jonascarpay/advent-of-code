@@ -54,6 +54,6 @@ parsePP = sepBy1 entry eol
 
 day4 :: Spec
 day4 = do
-  pps <- runIO $ parseFile "input/day4.txt" (parsePP <* eof)
+  pps <- runIO $ parseFile "input/2020/day4.txt" (parsePP <* eof)
   star1 219 $ length $ filter validpp pps
   star2 127 $ length $ filter (\pp -> all (uncurry validField) pp && validpp pp) pps

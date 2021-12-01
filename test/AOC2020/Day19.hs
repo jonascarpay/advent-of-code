@@ -59,7 +59,7 @@ rmatch rs = any null . execStateT (go (rs IM.! 0)) . T.unpack
 
 day19 :: Spec
 day19 = do
-  (rs, ts) <- runIO $ parseFile "input/day19.txt" parser
+  (rs, ts) <- runIO $ parseFile "input/2020/day19.txt" parser
   star1 200 $ length $ filter (rmatch rs) ts
   let rs' =
         IM.insert 8 (RB (RS [42]) (RS [42, 8]))

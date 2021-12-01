@@ -9,7 +9,7 @@ import Test.Hspec
 
 day2 :: Spec
 day2 = do
-  input <- runIO $ parseFile "input/day2.txt" $ pLines parsePw
+  input <- runIO $ parseFile "input/2020/day2.txt" $ pLines parsePw
   star1 560 $ length $ filter validPass input
   star2 303 $ length $ filter validPass2 input
 

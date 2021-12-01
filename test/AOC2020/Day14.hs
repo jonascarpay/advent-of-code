@@ -62,6 +62,6 @@ pmask2 m0 b =
 
 day14 :: Spec
 day14 = do
-  p <- runIO $ parseFile "input/day14.txt" pp
+  p <- runIO $ parseFile "input/2020/day14.txt" pp
   star1 8566770985168 $ sum . IM.elems $ run mempty 0 0 p
   star2 4832039794082 $ sum . IM.elems $ run2 mempty pure p

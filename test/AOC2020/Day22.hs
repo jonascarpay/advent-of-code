@@ -56,8 +56,8 @@ unEither = either id id
 
 day22 :: Spec
 day22 = do
-  (lEx, rEx) <- runIO $ parseFile "input/day22ex.txt" parse22
-  (l, r) <- runIO $ parseFile "input/day22.txt" parse22
+  (lEx, rEx) <- runIO $ parseFile "input/2020/day22ex.txt" parse22
+  (l, r) <- runIO $ parseFile "input/2020/day22.txt" parse22
   star1ex 306 $ ex1 lEx rEx
   star1 32815 $ ex1 l r
   star2ex 291 $ ex2 lEx rEx
