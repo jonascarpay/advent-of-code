@@ -6,10 +6,10 @@
 
 module AOC2020.Day22 (day22) where
 
-import AOC2020.Common
 import Data.Set (Set)
 import Data.Set qualified as S
 import Parse
+import TestLib
 
 parse22 :: Parser ([Int], [Int])
 parse22 = do

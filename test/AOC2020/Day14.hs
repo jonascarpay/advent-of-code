@@ -6,7 +6,6 @@
 
 module AOC2020.Day14 where
 
-import AOC2020.Common
 import Control.Monad
 import Data.Bits
 import Data.IntMap (IntMap)
@@ -14,22 +13,23 @@ import Data.IntMap qualified as IM
 import Lib
 import Parse
 import Test.Hspec
+import TestLib
 
 data Inst = Mask [Char] | Set Int Int
   deriving (Show)
 
 pp :: Parser [Inst]
 pp = many $ (maskbs <|> membs) <* eol
- where
-  maskbs = do
-    chars <- chunk "mask = " *> replicateM 36 anySingle
-    pure $ Mask chars
-  membs = do
-    chunk "mem["
-    k <- decimal
-    chunk "] = "
-    v <- decimal
-    pure $ Set k v
+  where
+    maskbs = do
+      chars <- chunk "mask = " *> replicateM 36 anySingle
+      pure $ Mask chars
+    membs = do
+      chunk "mem["
+      k <- decimal
+      chunk "] = "
+      v <- decimal
+      pure $ Set k v
 
 run :: IntMap Int -> Int -> Int -> [Inst] -> IntMap Int
 run mem _ _ [] = mem
@@ -38,11 +38,11 @@ run mem _ _ (Mask cs : t) = let (ma', mo') = parseMask cs in run mem ma' mo' t
 
 parseMask :: [Char] -> (Int, Int)
 parseMask cs = (\(a, b) -> (fromBE a, fromBE b)) $ unzip $ f <$> cs
- where
-  f :: Char -> (Bool, Bool)
-  f '1' = (True, True)
-  f '0' = (False, False)
-  f 'X' = (True, False)
+  where
+    f :: Char -> (Bool, Bool)
+    f '1' = (True, True)
+    f '0' = (False, False)
+    f 'X' = (True, False)
 
 run2 :: IntMap Int -> (Int -> [Int]) -> [Inst] -> IntMap Int
 run2 mem _ [] = mem

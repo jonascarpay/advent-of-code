@@ -7,12 +7,12 @@
 
 module AOC2020.Day24 (day24) where
 
-import AOC2020.Common
+import Data.Histogram qualified as H
 import Data.Set (Set)
 import Data.Set qualified as S
-import Data.Histogram qualified as H
 import Linear hiding (E)
 import Parse
+import TestLib
 
 data Dir = E | SE | SW | W | NW | NE
   deriving (Show, Enum)
@@ -54,7 +54,7 @@ step s = S.fromList $ filter next adjacents
             then not $ n == 0 || n > 2
             else n == 2
 
-count :: Ord a => [a] -> [(a,Int)]
+count :: Ord a => [a] -> [(a, Int)]
 count = H.toList . H.fromList
 
 s1 :: [[Dir]] -> Int

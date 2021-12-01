@@ -12,11 +12,23 @@ import Data.Foldable (toList)
 import Data.Maybe
 import Linear
 
+bigrams :: [a] -> [(a, a)]
+bigrams xs = zip xs (tail xs)
+
+ordered :: Foldable f => (a -> a -> Bool) -> f a -> Bool
+ordered f = all (uncurry f) . bigrams . toList
+
+slide2 :: [a] -> [V2 a]
+slide2 xs = zipWith V2 xs (tail xs)
+
+slide3 :: [a] -> [V3 a]
+slide3 xs = (\(a, b, c) -> V3 a b c) <$> zip3 xs (drop 1 xs) (drop 2 xs)
+
 count :: Foldable t => (a -> Bool) -> t a -> Int
 count p = length . filter p . toList
 
 adjacent :: (Eq (t Int), Traversable t) => t Int -> [t Int]
-adjacent v = filter (/= v) . traverse (\x -> [x -1 .. x + 1]) $ v
+adjacent v = filter (/= v) . traverse (\x -> [x - 1 .. x + 1]) $ v
 
 orthogonal :: (Eq (t Int), Traversable t, Applicative t) => t Int -> [t Int]
 orthogonal v = filter (\v' -> sum (liftA2 (\a b -> abs (a - b)) v' v) == 1) $ adjacent v

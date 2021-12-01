@@ -7,13 +7,13 @@
 
 module AOC2020.Day23 (day23) where
 
-import AOC2020.Common
 import Control.Monad
 import Control.Monad.ST
 import Data.Vector.Unboxed (Vector)
 import Data.Vector.Unboxed qualified as V
 import Data.Vector.Unboxed.Mutable (STVector)
 import Data.Vector.Unboxed.Mutable qualified as VM
+import TestLib
 
 exinput :: [Int]
 exinput = [3, 8, 9, 1, 2, 5, 4, 6, 7]
@@ -54,11 +54,11 @@ playround nexts esrc = do
   a <- VM.read nexts esrc
   b <- VM.read nexts a
   c <- VM.read nexts b
-  let edst = go (esrc -1)
+  let edst = go (esrc - 1)
         where
           go n
-            | n < 0 = go (VM.length nexts -1)
-            | n == a || n == b || n == c = go (n -1)
+            | n < 0 = go (VM.length nexts - 1)
+            | n == a || n == b || n == c = go (n - 1)
             | otherwise = n
   VM.read nexts c >>= VM.write nexts esrc
   VM.read nexts edst >>= VM.write nexts c
@@ -69,7 +69,7 @@ iterateM_ :: Monad m => (a -> m a) -> a -> Int -> m ()
 iterateM_ f = go
   where
     go _ n | n < 1 = pure ()
-    go a n = f a >>= \a' -> go a' (n -1)
+    go a n = f a >>= \a' -> go a' (n - 1)
 
 day23 :: Spec
 day23 = do

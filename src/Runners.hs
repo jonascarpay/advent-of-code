@@ -19,6 +19,7 @@ import Data.Bool
 import Data.Char
 import Data.Either
 import Data.Foldable
+import Data.Histogram qualified as H
 import Data.IntMap (IntMap)
 import Data.IntMap qualified as IM
 import Data.IntSet (IntSet)
@@ -38,7 +39,20 @@ import Data.Text qualified as T
 import Data.Vector (Vector)
 import Data.Vector qualified as V
 import Debug.Trace
-import Data.Histogram qualified as H
 import Lib
 import Linear hiding (E, rotate, trace)
 import Parse hiding (State)
+
+ex1 :: String -> Int
+ex1 = length . filter (ordered (<)) . slide2 . fmap (read @Int) . lines
+
+ex2 :: String -> Int
+ex2 = length . filter (ordered (<)) . slide2 . fmap sum . slide3 . fmap (read @Int) . lines
+
+run :: IO ()
+run = do
+  ex <- readFile "input/2021/01.ex.txt"
+  -- d1 <- readFile "input/2021/01.txt"
+  print $ ex2 ex
+
+-- putStrLn d1

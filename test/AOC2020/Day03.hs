@@ -2,11 +2,11 @@
 
 module AOC2020.Day03 (day3) where
 
-import AOC2020.Common
 import Block
 import Control.Lens
 import Linear
 import Parse
+import TestLib
 
 day3 :: Spec
 day3 = do

@@ -4,12 +4,12 @@
 
 module AOC2020.Day11 (day11) where
 
-import AOC2020.Common
 import Block
 import Data.Foldable (toList)
 import Lib
 import Linear
 import Parse
+import TestLib
 
 data Square = Free | Occ | Floor
   deriving (Eq, Show)

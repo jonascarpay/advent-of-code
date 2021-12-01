@@ -5,18 +5,18 @@
 
 module AOC2020.Day20 (day20) where
 
-import AOC2020.Common
 import Block
 import Data.Foldable (toList)
+import Data.Histogram qualified as H
 import Data.Map (Map)
 import Data.Map qualified as M
 import Data.Maybe
 import Data.Vector (Vector)
 import Data.Vector qualified as V
-import Data.Histogram qualified as H
 import Lib
 import Linear hiding (E, rotate, trace)
 import Parse hiding (State)
+import TestLib
 
 ptile :: Parser [(Int, Block Char)]
 ptile = sepBy m eol
@@ -106,7 +106,7 @@ ex2 bs = total - length vs * 15
     block :: Block Char
     block = assemble $ trimEdges <$> map
     trimEdges :: Block Char -> Block Char
-    trimEdges b = fromJust $ slice 1 (bSize b -2) b
+    trimEdges b = fromJust $ slice 1 (bSize b - 2) b
 
 monster :: Block Char
 monster =

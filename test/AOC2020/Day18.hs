@@ -7,10 +7,10 @@
 
 module AOC2020.Day18 (day18) where
 
-import AOC2020.Common
 import Control.Monad
 import Data.List.Split (splitOn)
 import Parse
+import TestLib
 
 data Tkn = Num Int | Add | Mul | Paren [Tkn]
   deriving (Eq, Show)

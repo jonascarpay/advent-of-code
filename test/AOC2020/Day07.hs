@@ -2,7 +2,6 @@
 
 module AOC2020.Day07 (day7) where
 
-import AOC2020.Common
 import Control.Applicative hiding (many)
 import Data.Map (Map)
 import Data.Map qualified as M
@@ -10,6 +9,7 @@ import Data.Maybe
 import Data.Set (Set)
 import Data.Set qualified as S
 import Parse
+import TestLib
 
 s1 :: [(Bag, [(Int, Bag)])] -> Int
 s1 contains =
@@ -19,7 +19,7 @@ s1 contains =
       go set =
         let set' = set <> mconcat (fromMaybe mempty . flip M.lookup m <$> S.toList set)
          in if set == set' then set else go set'
-   in length (go (S.singleton sg)) -1
+   in length (go (S.singleton sg)) - 1
 
 s2 :: [(Bag, [(Int, Bag)])] -> Int
 s2 contains =

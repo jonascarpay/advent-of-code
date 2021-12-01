@@ -44,7 +44,6 @@ test-suite spec
   main-is:        Spec.hs
   other-modules:
     AOC2020
-    AOC2020.Common
     AOC2020.Day01
     AOC2020.Day02
     AOC2020.Day03
@@ -70,6 +69,9 @@ test-suite spec
     AOC2020.Day23
     AOC2020.Day24
     AOC2020.Day25
+    AOC2021
+    AOC2021.Day01
+    TestLib
 
   ghc-options:
     -Wall -fno-warn-incomplete-uni-patterns

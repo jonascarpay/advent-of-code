@@ -2,9 +2,9 @@
 
 module AOC2020.Day05 (day5) where
 
-import AOC2020.Common
 import Data.IntSet as IS
 import Test.Hspec
+import TestLib
 
 day5 :: Spec
 day5 = do

@@ -5,17 +5,17 @@
 
 module AOC2020.Day21 (day21) where
 
-import AOC2020.Common
 import Data.Foldable
+import Data.Histogram qualified as H
 import Data.Map (Map)
 import Data.Map qualified as M
 import Data.Maybe
 import Data.Set (Set)
 import Data.Set qualified as S
 import Data.Text qualified as T
-import Data.Histogram qualified as H
 import Lib
 import Parse
+import TestLib
 
 pp :: Parser [([Text], [Text])]
 pp = do
@@ -29,26 +29,26 @@ pp = do
 
 solve2 :: [([Text], [Text])] -> (Int, Text)
 solve2 cands = (occurs, dangers)
- where
-  occurs :: Int
-  occurs = sum $ (`H.lookup` nosh) <$> nos
-  dangers :: Text
-  dangers = T.intercalate "," $ fmap snd $ fromJust $ assignUnique (fmap S.toList <$> M.toList allergs)
-  nosh :: H.Histogram Text
-  nosh = H.fromList (cands >>= fst)
-  nos :: [Text]
-  nos = filter (\f -> S.notMember f hasAllerg) foods
-  allergs :: Map Text (Set Text)
-  allergs = go mempty cands
-  foods :: [Text]
-  foods = S.toList $ S.fromList $ cands >>= fst
-  hasAllerg :: Set Text
-  hasAllerg = fold $ M.elems $ allergs
-  go :: Map Text (Set Text) -> [([Text], [Text])] -> Map Text (Set Text)
-  go m [] = m
-  go m ((is, as) : t) =
-    let m' = foldr (\a n -> M.insertWith S.intersection a (S.fromList is) n) m as
-     in go m' t
+  where
+    occurs :: Int
+    occurs = sum $ (`H.lookup` nosh) <$> nos
+    dangers :: Text
+    dangers = T.intercalate "," $ fmap snd $ fromJust $ assignUnique (fmap S.toList <$> M.toList allergs)
+    nosh :: H.Histogram Text
+    nosh = H.fromList (cands >>= fst)
+    nos :: [Text]
+    nos = filter (\f -> S.notMember f hasAllerg) foods
+    allergs :: Map Text (Set Text)
+    allergs = go mempty cands
+    foods :: [Text]
+    foods = S.toList $ S.fromList $ cands >>= fst
+    hasAllerg :: Set Text
+    hasAllerg = fold $ M.elems $ allergs
+    go :: Map Text (Set Text) -> [([Text], [Text])] -> Map Text (Set Text)
+    go m [] = m
+    go m ((is, as) : t) =
+      let m' = foldr (\a n -> M.insertWith S.intersection a (S.fromList is) n) m as
+       in go m' t
 
 day21 :: Spec
 day21 = do

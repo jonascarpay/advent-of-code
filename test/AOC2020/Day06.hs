@@ -4,9 +4,9 @@
 
 module AOC2020.Day06 (day6) where
 
-import AOC2020.Common
 import Data.List.Split (splitOn)
 import Test.Hspec
+import TestLib
 
 day6 :: Spec
 day6 = do

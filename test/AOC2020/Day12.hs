@@ -4,8 +4,8 @@
 
 module AOC2020.Day12 (day12) where
 
-import AOC2020.Common
 import Test.Hspec
+import TestLib
 
 data Dir = N | E | S | W | F | L | R
   deriving (Show)

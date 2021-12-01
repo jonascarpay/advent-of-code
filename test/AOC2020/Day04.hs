@@ -2,11 +2,11 @@
 
 module AOC2020.Day04 (day4) where
 
-import AOC2020.Common
 import Control.Applicative hiding (many)
 import Data.Text qualified as T
 import Debug.Trace
 import Parse
+import TestLib
 
 validpp :: [(Text, Text)] -> Bool
 validpp ss = case lookup "cid" ss of

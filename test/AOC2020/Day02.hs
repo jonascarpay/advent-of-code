@@ -2,10 +2,10 @@
 
 module AOC2020.Day02 (day2) where
 
-import AOC2020.Common
 import Data.Text qualified as T
 import Parse
 import Test.Hspec
+import TestLib
 
 day2 :: Spec
 day2 = do
@@ -29,10 +29,10 @@ validPass (lo, hi, c, str) = let n = T.length (T.filter (== c) str) in n >= lo &
 
 validPass2 :: (Int, Int, Char, Text) -> Bool
 validPass2 (lo, hi, c, str) = do
-  let clo = T.index str (lo -1)
-      chi = T.index str (hi -1)
+  let clo = T.index str (lo - 1)
+      chi = T.index str (hi - 1)
    in xor (clo == c) (chi == c)
- where
-  xor True False = True
-  xor False True = True
-  xor _ _ = False
+  where
+    xor True False = True
+    xor False True = True
+    xor _ _ = False

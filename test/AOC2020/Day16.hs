@@ -3,13 +3,13 @@
 
 module AOC2020.Day16 (day16) where
 
-import AOC2020.Common
 import Control.Monad
 import Data.Maybe
 import Data.Text qualified as T
 import Lib
 import Parse
 import Test.Hspec
+import TestLib
 
 data Rule = Rule Text Int Int Int Int
   deriving (Show)

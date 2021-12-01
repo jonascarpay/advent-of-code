@@ -6,9 +6,9 @@
 
 module AOC2020.Day15 (day15) where
 
-import AOC2020.Common
 import Data.IntMap.Strict (IntMap)
 import Data.IntMap.Strict qualified as M
+import TestLib
 
 input :: [Int]
 input = [0, 13, 1, 16, 6, 17]

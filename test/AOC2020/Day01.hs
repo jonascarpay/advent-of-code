@@ -4,11 +4,11 @@
 
 module AOC2020.Day01 (day1) where
 
-import AOC2020.Common
 import Lib
 import Linear
 import Parse
 import Test.Hspec
+import TestLib
 
 day1 :: Spec
 day1 = do

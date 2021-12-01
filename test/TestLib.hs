@@ -1,5 +1,5 @@
-module AOC2020.Common
-  ( module AOC2020.Common,
+module TestLib
+  ( module TestLib,
     module Test.Hspec,
   )
 where

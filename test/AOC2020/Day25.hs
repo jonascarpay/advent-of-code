@@ -1,8 +1,8 @@
 module AOC2020.Day25 (day25) where
 
-import AOC2020.Common
 import Data.List (elemIndex)
 import Data.Maybe (fromJust)
+import TestLib
 
 s1 :: (Int, Int) -> Int
 s1 (cp, dp) = iterate (transform cp) 1 !! (fromJust . elemIndex dp . iterate (transform 7)) 1

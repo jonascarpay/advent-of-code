@@ -6,12 +6,12 @@
 
 module AOC2020.Day13 where
 
-import AOC2020.Common
 import Data.Foldable
 import Data.List.Split
 import Data.Ord
 import Lib
 import Test.Hspec
+import TestLib
 
 parseTT :: String -> (Int, [(Int, Int)])
 parseTT str = (read arr, sched')

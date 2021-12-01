@@ -2,11 +2,11 @@
 
 module AOC2020.Day08 (day8) where
 
-import AOC2020.Common
 import Data.Maybe
 import Data.Set qualified as S
 import Data.Vector qualified as V
 import Test.Hspec
+import TestLib
 
 data Op
   = Acc Int
