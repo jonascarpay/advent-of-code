@@ -43,16 +43,13 @@ import Parse hiding (State)
 
 f :: String -> Int
 f input =
-  let go :: [[String]] -> Int -> Int -> Int -> Int
-      go (["forward", n] : r) x y a = go r (x + read n) (y + read n * a) a
-      go (["up", n] : r) x y a = go r x y (a - read n)
-      go (["down", n] : r) x y a = go r x y (a + read n)
-      go [] x y a = x * y
-   in go (fmap words $ lines input) 0 0 0
+  let ls = lines input
+      ws = words input
+   in length ls
 
 run :: IO ()
 run = do
-  exam <- readFile "input/2021/02.ex.txt"
-  input <- readFile "input/2021/02.txt"
+  exam <- readFile "input/2021/03.ex.txt"
+  input <- readFile "input/2021/03.txt"
   print $ f exam
   print $ f input
