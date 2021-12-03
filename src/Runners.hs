@@ -24,8 +24,6 @@ import Data.IntMap (IntMap)
 import Data.IntMap qualified as IM
 import Data.IntSet (IntSet)
 import Data.IntSet qualified as IS
-import Data.List
-import Data.List.Split (splitOn)
 import Data.Map (Map)
 import Data.Map qualified as M
 import Data.Maybe
@@ -43,16 +41,18 @@ import Lib
 import Linear hiding (E, rotate, trace)
 import Parse hiding (State)
 
-ex1 :: String -> Int
-ex1 = length . filter (ordered (<)) . slide2 . fmap (read @Int) . lines
-
-ex2 :: String -> Int
-ex2 = length . filter (ordered (<)) . slide2 . fmap sum . slide3 . fmap (read @Int) . lines
+f :: String -> Int
+f input =
+  let go :: [[String]] -> Int -> Int -> Int -> Int
+      go (["forward", n] : r) x y a = go r (x + read n) (y + read n * a) a
+      go (["up", n] : r) x y a = go r x y (a - read n)
+      go (["down", n] : r) x y a = go r x y (a + read n)
+      go [] x y a = x * y
+   in go (fmap words $ lines input) 0 0 0
 
 run :: IO ()
 run = do
-  ex <- readFile "input/2021/01.ex.txt"
-  -- d1 <- readFile "input/2021/01.txt"
-  print $ ex2 ex
-
--- putStrLn d1
+  exam <- readFile "input/2021/02.ex.txt"
+  input <- readFile "input/2021/02.txt"
+  print $ f exam
+  print $ f input

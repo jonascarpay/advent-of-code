@@ -5,7 +5,7 @@
 module AOC2021 where
 
 import AOC2021.Day01
--- import AOC2021.Day02
+import AOC2021.Day02
 -- import AOC2021.Day03
 -- import AOC2021.Day04
 -- import AOC2021.Day05
@@ -34,8 +34,8 @@ import Test.Hspec
 aoc2021 :: Spec
 aoc2021 = do
   describe "day 1" day1
+  describe "day 2" day2
 
--- describe "day 2" day2
 -- describe "day 3" day3
 -- describe "day 4" day4
 -- describe "day 5" day5
