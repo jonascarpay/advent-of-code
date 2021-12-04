@@ -1,11 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Parse (
-  module Parse,
-  module Text.Megaparsec,
-  module Text.Megaparsec.Char,
-  Text,
-) where
+module Parse
+  ( module Parse,
+    module Text.Megaparsec,
+    module Text.Megaparsec.Char,
+    Text,
+  )
+where
 
 import Data.Text (Text)
 import Data.Text qualified as T
@@ -45,3 +46,9 @@ pSuchThat m f = do
 
 pLine :: Parser Text
 pLine = takeWhileP Nothing (/= '\n') <* single ('\n')
+
+pSpace :: Parser ()
+pSpace = Lex.space space1 empty empty
+
+lexeme :: Parser a -> Parser a
+lexeme = (<* pSpace)
