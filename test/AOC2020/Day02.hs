@@ -16,11 +16,10 @@ day2 = do
 parsePw :: Parser (Int, Int, Char, Text)
 parsePw = do
   lo <- decimal
-  chunk "-"
-  hi <- decimal
-  chunk " "
+  hi <- next decimal
+  skip 1
   c <- anySingle
-  chunk ": "
+  skip 2
   pw <- T.pack <$> many alphaNumChar
   pure (lo, hi, c, pw)
 

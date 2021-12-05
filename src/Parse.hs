@@ -8,6 +8,8 @@ module Parse
   )
 where
 
+import Control.Monad
+import Data.Char
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Text.IO qualified as T
@@ -21,13 +23,16 @@ type Parser = Parsec Void Text
 decimal :: Parser Int
 decimal = Lex.decimal
 
+skip :: Int -> Parser ()
+skip n = void $ takeP Nothing n
+
 word :: Parser Text
-word = takeWhile1P Nothing (\c -> c >= 'a' && c <= 'z')
+word = takeWhile1P Nothing isAsciiLower
 
 parseFile :: FilePath -> Parser a -> IO a
 parseFile fp p = do
   bs <- T.readFile fp
-  either (fail . errorBundlePretty) pure $ runParser p fp bs
+  either (fail . errorBundlePretty) pure $ runParser (p <* takeRest) fp bs
 
 pLines :: Parser a -> Parser [a]
 pLines p = many (p <* eol) <* eof
@@ -45,7 +50,10 @@ pSuchThat m f = do
     Right b -> b <$ takeP Nothing n
 
 pLine :: Parser Text
-pLine = takeWhileP Nothing (/= '\n') <* single ('\n')
+pLine = takeWhileP Nothing (/= '\n') <* single '\n'
+
+next :: Parser a -> Parser a
+next = skipManyTill anySingle
 
 pSpace :: Parser ()
 pSpace = Lex.space space1 empty empty

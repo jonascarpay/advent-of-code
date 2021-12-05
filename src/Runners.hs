@@ -11,6 +11,7 @@ module Runners where
 import Block
 import Control.Applicative hiding (many, some)
 import Control.Monad
+import Control.Monad.Combinators qualified as P
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Maybe
 import Control.Monad.Trans.State
@@ -43,10 +44,25 @@ import Lib
 import Linear hiding (E, rotate, trace)
 import Parse hiding (State)
 
--- run :: IO ()
--- run = do
---   (nrs, bingos) <- parseFile "input/2021/04.txt" parser
---   -- (nrs, bingos) <- parseFile "input/2021/04.ex.txt" parser
---   print $ play nrs bingos
+type Input = ()
+
+parser :: Parser Input
+parser = pure ()
+
+ex1 :: Input -> Int
+ex1 input = 0
+
+ex2 :: Input -> Int
+ex2 input = 0
+
+run :: IO ()
+run = do
+  exam <- parseFile "input/2021/05.ex.txt" parser
+  -- input <- parseFile "input/2021/05.txt" parser
+  print $ ex1 exam
+  -- print $ ex1 input
+  -- print $ ex2 exam
+  -- print $ ex1 input
+  pure ()
 
 -- print $ f input

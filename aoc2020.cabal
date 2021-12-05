@@ -9,13 +9,15 @@ copyright:     2020 Jonas Carpay
 
 common deps
   build-depends:
-    , base              >=4.13.0.0 && <5
+    , array
+    , base                >=4.13.0.0 && <5
     , containers
     , histogram-simple
     , lens
     , linear
     , megaparsec
     , mtl
+    , parser-combinators
     , split
     , text
     , transformers
@@ -71,6 +73,10 @@ test-suite spec
     AOC2020.Day25
     AOC2021
     AOC2021.Day01
+    AOC2021.Day02
+    AOC2021.Day03
+    AOC2021.Day04
+    AOC2021.Day05
     TestLib
 
   ghc-options:

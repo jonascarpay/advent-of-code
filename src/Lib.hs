@@ -12,9 +12,12 @@ import Data.Foldable (toList)
 import Data.Maybe
 import Linear
 
+-- bigrams [a, b, c] = [(a,b), (b,c)]
 bigrams :: [a] -> [(a, a)]
 bigrams xs = zip xs (tail xs)
 
+-- ordered (<=) = ascending
+-- ordered (<) = strictly ascending
 ordered :: Foldable f => (a -> a -> Bool) -> f a -> Bool
 ordered f = all (uncurry f) . bigrams . toList
 
@@ -33,18 +36,23 @@ adjacent v = filter (/= v) . traverse (\x -> [x - 1 .. x + 1]) $ v
 orthogonal :: (Eq (t Int), Traversable t, Applicative t) => t Int -> [t Int]
 orthogonal v = filter (\v' -> sum (liftA2 (\a b -> abs (a - b)) v' v) == 1) $ adjacent v
 
+range :: Int -> Int -> [Int]
+range a b
+  | a < b = [a .. b]
+  | otherwise = reverse [b .. a]
+
 -- Not very clever; just repeatedly filters out candidates
 -- that already uniquely belong to another field
 assignUnique :: Eq c => [(r, [c])] -> Maybe [(r, c)]
 assignUnique rs
   | length singles == length rs = Just singles
-  | length singles == 0 = Nothing
+  | null singles = Nothing
   | otherwise = assignUnique rs'
   where
     singles =
       rs >>= \case
         (r, [c]) -> [(r, c)]
-        (r, _) -> []
+        _ -> []
     solveds = snd <$> singles
     rs' = flip fmap rs $ \case
       (r, [c]) -> (r, [c])
