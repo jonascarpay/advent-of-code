@@ -2,14 +2,16 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TupleSections #-}
 {-# LANGUAGE TypeApplications #-}
-{-# OPTIONS_GHC -Wno-incomplete-uni-patterns -Wno-unused-imports #-}
+{-# OPTIONS_GHC -Wno-incomplete-patterns -Wno-incomplete-uni-patterns -Wno-unused-imports #-}
 
 module Runners where
 
 import Block
 import Control.Applicative hiding (many, some)
+import Control.Lens
 import Control.Monad
 import Control.Monad.Combinators qualified as P
 import Control.Monad.Trans.Class
@@ -44,6 +46,14 @@ import Lib
 import Linear hiding (E, rotate, trace)
 import Parse hiding (State)
 
+data St = St
+  { _foo :: Int,
+    _bar :: Int
+  }
+  deriving (Eq, Show)
+
+makeLenses ''St
+
 type Input = ()
 
 parser :: Parser Input
@@ -57,12 +67,9 @@ ex2 input = 0
 
 run :: IO ()
 run = do
-  exam <- parseFile "input/2021/05.ex.txt" parser
-  -- input <- parseFile "input/2021/05.txt" parser
+  exam <- parseFile "TODO" parser
+  input <- parseFile "TODO" parser
   print $ ex1 exam
-  -- print $ ex1 input
-  -- print $ ex2 exam
-  -- print $ ex1 input
-  pure ()
-
--- print $ f input
+  print $ ex1 input
+  print $ ex2 exam
+  print $ ex2 input
