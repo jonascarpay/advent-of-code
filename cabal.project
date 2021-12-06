@@ -1,2 +1,8 @@
 packages:
   ./
+
+source-repository-package
+    type: git
+    location: https://github.com/xc-jp/histogram-simple.git
+    tag: d34ce277c501d122839b1158f1d9c6e07b3b3dbc
+    --sha256: sha256-HUOezBqnh44loh7Wd1DO02Rjg6nUVM3lYj7pHLxf8qc=

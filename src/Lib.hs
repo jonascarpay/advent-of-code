@@ -41,6 +41,13 @@ range a b
   | a < b = [a .. b]
   | otherwise = reverse [b .. a]
 
+nTimes :: Int -> (a -> a) -> a -> a
+nTimes n f = go n
+  where
+    go i a
+      | i < 1 = a
+      | otherwise = go (i - 1) (f a)
+
 -- Not very clever; just repeatedly filters out candidates
 -- that already uniquely belong to another field
 assignUnique :: Eq c => [(r, [c])] -> Maybe [(r, c)]

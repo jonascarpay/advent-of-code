@@ -12,7 +12,7 @@ common deps
     , array
     , base                >=4.13.0.0 && <5
     , containers
-    , histogram-simple
+    , histogram-simple    >=1.1
     , lens
     , linear
     , megaparsec
@@ -77,6 +77,7 @@ test-suite spec
     AOC2021.Day03
     AOC2021.Day04
     AOC2021.Day05
+    AOC2021.Day06
     TestLib
 
   ghc-options:
