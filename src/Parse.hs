@@ -11,7 +11,6 @@ where
 import Control.Monad
 import Data.Char
 import Data.Text (Text)
-import Data.Text qualified as T
 import Data.Text.IO qualified as T
 import Data.Void
 import Text.Megaparsec hiding (count)
