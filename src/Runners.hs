@@ -46,14 +46,6 @@ import Lib
 import Linear hiding (E, rotate, trace)
 import Parse hiding (State)
 
-data St = St
-  { _foo :: Int,
-    _bar :: Int
-  }
-  deriving (Eq, Show)
-
-makeLenses ''St
-
 type Input = ()
 
 parser :: Parser Input
