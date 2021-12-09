@@ -59,9 +59,10 @@ ex2 input = 0
 
 run :: IO ()
 run = do
-  exam <- parseFile "TODO" parser
-  input <- parseFile "TODO" parser
+  exam <- parseFile "input/2021/TODO.ex.txt" parser
   print $ ex1 exam
-  print $ ex1 input
-  print $ ex2 exam
-  print $ ex2 input
+  -- input <- parseFile "input/2021/TODO.txt" parser
+  -- print $ ex1 input
+  -- print $ ex2 exam
+  -- print $ ex2 input
+  pure ()
