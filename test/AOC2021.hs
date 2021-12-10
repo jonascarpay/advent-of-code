@@ -13,7 +13,7 @@ import AOC2021.Day06
 import AOC2021.Day07
 import AOC2021.Day08
 import AOC2021.Day09
--- import AOC2021.Day10
+import AOC2021.Day10
 -- import AOC2021.Day11
 -- import AOC2021.Day12
 -- import AOC2021.Day13
@@ -42,8 +42,8 @@ aoc2021 = do
   describe "day 7" day7
   describe "day 8" day8
   describe "day 9" day9
+  describe "day 10" day10
 
--- describe "day 10" day10
 -- describe "day 11" day11
 -- describe "day 12" day12
 -- describe "day 13" day13

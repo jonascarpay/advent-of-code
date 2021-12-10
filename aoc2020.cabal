@@ -81,6 +81,7 @@ test-suite spec
     AOC2021.Day07
     AOC2021.Day08
     AOC2021.Day09
+    AOC2021.Day10
     TestLib
 
   ghc-options:
