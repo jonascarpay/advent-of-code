@@ -1,5 +1,5 @@
 cabal-version: 2.4
-name:          aoc2020
+name:          advent-of-code
 version:       0
 license:       BSD-3-Clause
 build-type:    Simple
@@ -89,5 +89,5 @@ test-suite spec
     -fno-warn-incomplete-patterns -O2
 
   build-depends:
-    , aoc2020
+    , advent-of-code
     , hspec

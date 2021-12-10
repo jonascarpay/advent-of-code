@@ -1,1 +1,3 @@
-# aoc2020
+# Advent of Code
+
+Haskell solutions to Advent of Code
