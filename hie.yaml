@@ -3,4 +3,4 @@ cradle:
     - path: "src"
       config: {cradle: {cabal: {component: "lib"}}}
     - path: "test"
-      config: {cradle: {cabal: {component: "aoc2020:spec"}}}
+      config: {cradle: {cabal: {component: "advent-of-code:spec"}}}
