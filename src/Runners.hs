@@ -27,7 +27,7 @@ import Data.IntMap (IntMap)
 import Data.IntMap qualified as IM
 import Data.IntSet (IntSet)
 import Data.IntSet qualified as IS
-import Data.List (sort)
+import Data.List (nub, sort)
 import Data.List.Split (splitOn)
 import Data.Map (Map)
 import Data.Map qualified as M
